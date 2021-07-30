@@ -16,11 +16,13 @@ function Three({ setStep, party, title }) {
   const codeNumber = randomNum();
 
   const createRoom = () => {
-    db.collection("Chatting").doc(String(codeNumber)).set({
-      party: party,
-      title: title,
-      code: codeNumber,
-    });
+    db.collection("Chatting")
+      .doc(String(codeNumber))
+      .set({
+        party: party,
+        title: title || "",
+        code: codeNumber,
+      });
   };
 
   return (
