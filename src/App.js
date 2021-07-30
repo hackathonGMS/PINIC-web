@@ -1,24 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import { Box, Flex } from "@chakra-ui/react";
+import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { Switch, Route } from "react-router-dom";
+
+import { Join, Create, Main, Participate } from "./pages";
 
 function App() {
+  const [name, setName] = useState();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Flex direction="column" w="full" m="0 auto" minH="full" maxW="full" bg="primary">
+      <Box flexGrow={1} w="full" alignSelf="center">
+        <Route
+          render={({ location }) => (
+            <AnimatePresence exitBeforeEnter initial={false}>
+              <Switch location={location} key={location.pathname}>
+                <Route
+                  path="/room/:id"
+                  render={(props) => {
+                    if (name) {
+                      return <Main name={name} {...props} />;
+                    } else {
+                      return <Join />;
+                    }
+                  }}
+                />
+                <Route
+                  path="/ready/:id"
+                  render={(props) => {
+                    return <Participate setName={setName} {...props} />;
+                  }}
+                />
+                <Route exact path="/">
+                  <Join />
+                </Route>
+                <Route exact path="/create">
+                  <Create />
+                </Route>
+              </Switch>
+            </AnimatePresence>
+          )}
+        />
+      </Box>
+    </Flex>
   );
 }
 

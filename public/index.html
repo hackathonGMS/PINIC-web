@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta name="PICNIC" content="아직도 먹니? 이젠 참여해봐!" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&family=Noto+Serif+KR:wght@200;300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -24,10 +26,12 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>피크닉 | 회의가 재밌어진다</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <a id="enterBtn" href="#" class="btn btn-primary btn-user text-center"> ENTER </a>
+    <div class="row" style="width: 250px" id="otherVideos"></div>
     <div id="root"></div>
     <!--
       This HTML file is a template.
@@ -40,4 +44,28 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+      apiKey: "AIzaSyDb9OSntN8yMwRhFmOBdQJPMXCvgd1C1E4",
+      authDomain: "picnic-163ae.firebaseapp.com",
+      projectId: "picnic-163ae",
+      storageBucket: "picnic-163ae.appspot.com",
+      messagingSenderId: "306560948784",
+      appId: "1:306560948784:web:8252a05408c61e908babf5",
+      measurementId: "G-GXW7F7G36Y",
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+  <script src="node_modules/@remotemonster/sdk/remon.min.js"></script>
 </html>
