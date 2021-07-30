@@ -17,6 +17,7 @@ import {
   PopoverCloseButton,
   Portal,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, forwardRef } from "react";
 import { IoEllipsisHorizontalCircleSharp, IoPaperPlane } from "react-icons/io5";
@@ -28,6 +29,7 @@ import ChatCategorySelect from "./ChatCategorySelect";
 import MyChat from "./ChatBubble/MyChat";
 import OtherChat from "./ChatBubble/OtherChat";
 import ChatBar from "./ChatBubble/ChatBar";
+import { TTS } from "./TTS/textSound";
 
 export default function Chatting({ roomId, name }) {
   const [chatMode, setChatMode] = useState(0);
@@ -41,25 +43,49 @@ export default function Chatting({ roomId, name }) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [message, setSendMessage] = useState("");
+  const toast = useToast();
   useEffect(() => {
     db.collection("Chatting")
       .doc(roomId)
       .collection("data")
       .orderBy("at", "desc")
       .onSnapshot((d) => {
+        if (d.docChanges().length < 3) {
+          d.docChanges().forEach((change) => {
+            if (change.type === "added" && change.doc.data().type === 2) {
+              TTS(change.doc.data().message);
+            }
+            if (change.type === "added" && change.doc.data().type === 1) {
+              toast({
+                title: "중요한 채팅이 올라왔어요!",
+                description: change.doc.data().message,
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+              });
+            }
+          });
+        }
         setMessages(d.docs.map((doc) => ({ id: doc.id, message: doc.data() })));
       });
   }, []);
 
   const sendMessage = () => {
-    db.collection("Chatting").doc(roomId).collection("data").add({
-      message: message,
-      name: name,
-      type: chatMode,
-      at: new Date(),
-    });
+    if (!message.trim()) {
+      return;
+    }
+    db.collection("Chatting")
+      .doc(roomId)
+      .collection("data")
+      .add({
+        message: message,
+        name: name,
+        type: chatMode,
+        at: new Date().toLocaleTimeString(navigator.language, { hour: "2-digit", minute: "2-digit" }),
+      });
     setChatMode(0);
     setSendMessage("");
+
     // 메세지 화면에 세팅
   };
   //   <div ref={ref} className={`message ${isUser && "msg_user"}`}>
@@ -69,20 +95,21 @@ export default function Chatting({ roomId, name }) {
   // </div>
   const Message = forwardRef(({ message }, ref) => {
     const isUser = name === message.name; // 이 메세지가 본인이름일경우
+
     if (isUser) {
       return (
         <div ref={ref} className={`message ${isUser && "msg_user"}`}>
-          <MyChat message={message.message} name={message.name} type={colorList[message.type]} />
+          <MyChat at={message.at} message={message.message} name={message.name} type={colorList[message.type]} />
         </div>
       );
     } else if (!isUser) {
       return (
         <div ref={ref} className={`message ${isUser && "msg_user"}`}>
-          <OtherChat message={message.message} name={message.name} type={colorList[message.type]} />
+          <OtherChat at={message.at} message={message.message} name={message.name} type={colorList[message.type]} />
         </div>
       );
     }
-    return <ChatBar message={message.message} name={message.name} type={message.type} />;
+    return <ChatBar at={message.at} message={message.message} name={message.name} type={message.type} />;
   });
 
   return (
