@@ -11,7 +11,6 @@ export const Main = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    Video();
   }, []);
   return (
     <>
@@ -33,7 +32,7 @@ export const Main = (props) => {
         </GridItem>
         <GridItem rowSpan={7} colSpan={9}>
           <PicnicBlock>
-            <h1>메인화면</h1>
+           <Video id={String(props.match.params.id)}/>
           </PicnicBlock>
         </GridItem>
         <GridItem rowSpan={12} colSpan={3}>
