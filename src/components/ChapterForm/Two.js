@@ -6,17 +6,17 @@ function Two({ setStep, setTitle }) {
     setStep(2);
   };
   return (
-    <Box h="142px" color="white">
+    <Box w="full" h="142px" color="white" mt="60px">
       <Logo />
       <Text mt="10" fontSize="16px">
         피크닉 새로 생성하기
       </Text>
       <Flex>
-        <Text m="0px" p="0px" fontSize="21px">
+        <Text m="0px" p="0px" fontSize="24px">
           Step 2. 회의 주제을 입력해주세요
         </Text>
         <Spacer />
-        <Button bg="#7879F1" w="136px" h="35px" onClick={handleNextStep}>
+        <Button variant="link" bg="transparent" w="136px" h="32px" p="0px" m="0px" onClick={handleNextStep}>
           <Text as="ins" fontSize="14px" color="white">
             안건이 없어요
           </Text>
@@ -40,6 +40,7 @@ function Two({ setStep, setTitle }) {
         bg="rgb(0,0,0,0)"
         color="white"
         fontSize="24px"
+        placeholder="2021 숭실대학교 소프트웨어 & 글로벌미디어학부 해커톤 아이디어 회의"
       />
     </Box>
   );
