@@ -36,11 +36,12 @@ const videoAttrs = {
 };
 
 
-export default function Video(props) {
-  const room = props.id;
+export default function Video({id, handelConnect}) {
+  const room = id;
   const [videoState, setVideoState] = useState(false);
   const [audioState, setAudioState] = useState(false);
- 
+  const [handle, setHandle] = useState(false);
+
   const listener = {
     onConnect(chid) {
       console.log(`remon.listener.onConnect ${chid} at listener`);
@@ -131,9 +132,6 @@ export default function Video(props) {
       })
     }
   }
-  const onClick = () => {
-    start();
-  }
   
   const hadleMuteMyVideo = () => {
     remon.pauseLocalVideo(!videoState);
@@ -145,7 +143,7 @@ export default function Video(props) {
   }
   useEffect(() => {
     start();
-  }, []);
+  }, [handelConnect]);
 
   return (
      <div style={{height: '100%', padding: '20px'}}>
@@ -166,7 +164,6 @@ export default function Video(props) {
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <button onClick={hadleMuteMyVideo} style={{marginRight: '10px'}}>{ !videoState ? '화면 끄기' : '화면 켜기'}</button>
             <button onClick={handleMuteMyAudio} style={{marginRight: '10px'}}>{ !audioState ? '음소거' : '음소거 해제'}</button>
-            <button onClick={onClick}>종료</button>
           </div>
         </div>
       </div>

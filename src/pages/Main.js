@@ -9,7 +9,8 @@ import Video from "../components/Video";
 
 export const Main = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [handelConnect, setHandleConnect] = useState(false);
+  
   useEffect(() => {
   }, []);
   return (
@@ -27,12 +28,12 @@ export const Main = (props) => {
               </Heading>
             </ChakraLink>
 
-            {isOpen && <AlertMsg setIsOpen={setIsOpen} isOpen={isOpen} />}
+            {isOpen && <AlertMsg setIsOpen={setIsOpen} isOpen={isOpen} setHandleConnect={setHandleConnect} />}
           </HStack>
         </GridItem>
         <GridItem rowSpan={7} colSpan={9}>
           <PicnicBlock>
-           <Video id={String(props.match.params.id)}/>
+           <Video id={String(props.match.params.id)} handelConnect={handelConnect}/>
           </PicnicBlock>
         </GridItem>
         <GridItem rowSpan={12} colSpan={3}>
