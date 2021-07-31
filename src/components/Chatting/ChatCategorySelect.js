@@ -58,11 +58,7 @@ function ChatCategorySelect({ setChatMode }) {
           borderRadius="30px"
           p="0"
           px="0"
-          bg="calander">
-          <Text fontSize="12px" color="black" paddingX="7px">
-            일정 잡기
-          </Text>
-        </Button>
+          bg="calander"></Button>
         <Button
           onClick={() => {
             setChatMode(4);
