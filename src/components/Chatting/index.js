@@ -5,7 +5,7 @@ import {
   Icon,
   Input,
   Flex,
-  VStack,
+  Text,
   Spacer,
   Popover,
   PopoverTrigger,
@@ -18,6 +18,7 @@ import {
   Portal,
   Button,
   useToast,
+  Link,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, forwardRef } from "react";
 import { IoEllipsisHorizontalCircleSharp, IoPaperPlane } from "react-icons/io5";
@@ -62,6 +63,21 @@ export default function Chatting({ roomId, name }) {
                 status: "success",
                 duration: 9000,
                 isClosable: true,
+              });
+            } else if (change.type === "added" && change.doc.data().type === 4) {
+              toast({
+                duration: 9000,
+                isClosable: true,
+                status: "info",
+                title: "새로운 링크가 올라왔어요!",
+                description: (
+                  <>
+                    <Text fontSize="18px">바로 이동하기</Text>
+                    <Text fontSize="18px" bold>
+                      <Link href={change.doc.data().message}>{change.doc.data().message}</Link>
+                    </Text>
+                  </>
+                ),
               });
             }
           });
