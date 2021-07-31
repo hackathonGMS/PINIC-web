@@ -1,6 +1,23 @@
 import { Box, Button, Center, Checkbox, HStack, Input, Spacer, Text, Wrap, CloseButton, Tag, TagLabel, TagCloseButton } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { FBcreatePull } from "../firbase";
 
-function MakingPull({ setIsPullOpen }) {
+function MakingPull({ setIsPullOpen, roomId }) {
+  const [title, setTitle] = useState("");
+  const [list, setList] = useState([]);
+  const [isAnoun, setIsAnoun] = useState(false);
+  const [isMulti, setIsMulti] = useState(false);
+
+  const AddList = (e) => {
+    if (list.length >= 12) {
+      return alert("추가할 수 있는 항목 개수를 초과했습니다");
+    }
+    setList(...list, e.target.value);
+  };
+  const createPull = () => {
+    FBcreatePull(roomId, title, list, isAnoun, isMulti);
+  };
+
   return (
     <Box w="full" bg="white" borderRadius="10px" p="10px">
       <HStack spacing="3px">
@@ -56,7 +73,7 @@ function MakingPull({ setIsPullOpen }) {
       </Wrap>
       <Box w="100%" h="1px" bg="black" mt="38px" mb="9px"></Box>
       <Center>
-        <Button w="90px" h="23px" borderRadius="10px" p="0px" bg="#323232" border="0px">
+        <Button onClick={() => createPull()} w="90px" h="23px" borderRadius="10px" p="0px" bg="#323232" border="0px">
           <Text fontSize="10px" color="white" paddingX="10px">
             투표 생성
           </Text>

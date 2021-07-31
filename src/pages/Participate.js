@@ -6,6 +6,7 @@ import db from "../components/Chatting/firbase";
 export const Participate = ({ setName, match }) => {
   const [data, setData] = useState();
   useEffect(() => {
+    console.log(match.params.id);
     db.collection("Chatting")
       .doc(String(match.params.id))
       .get()
