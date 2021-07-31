@@ -40,6 +40,7 @@ function Two({ setStep, setTitle }) {
         bg="rgb(0,0,0,0)"
         color="white"
         fontSize="24px"
+        focusBorderColor="white"
         placeholder="2021 숭실대학교 소프트웨어 & 글로벌미디어학부 해커톤 아이디어 회의"
       />
     </Box>
