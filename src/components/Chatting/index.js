@@ -6,7 +6,7 @@ import {
   Input,
   Flex,
   Text,
-  Spacer,
+  Wrap,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -36,6 +36,7 @@ export default function Chatting({ roomId, name }) {
   const [chatMode, setChatMode] = useState(0);
   const [isPullOpen, setIsPullOpen] = useState(false);
   const [isRandomOpen, setIsRandomOpen] = useState(false);
+  const [sort, setSort] = useState(-1);
   //일반,중요,텍스트,일정,하이퍼링크
   const colorList = ["primary", "notice", "tts", "calander", "hyperlink"];
   const chatList = ["일반 채팅", "중요한 채팅", "텍스트로 말하기", "일정 정해요", "링크 전송"];
@@ -46,10 +47,11 @@ export default function Chatting({ roomId, name }) {
   const [message, setSendMessage] = useState("");
   const toast = useToast();
   useEffect(() => {
+    console.log(message.type);
+    console.log(sort);
     db.collection("Chatting")
       .doc(roomId)
       .collection("data")
-      .orderBy("at", "desc")
       .onSnapshot((d) => {
         if (d.docChanges().length < 3) {
           d.docChanges().forEach((change) => {
@@ -109,9 +111,16 @@ export default function Chatting({ roomId, name }) {
   //     {!isUser && `${message.name || "Unknown User"}: `} {message.message}
   //   </p>
   // </div>
+
+  //01234 -1
   const Message = forwardRef(({ message }, ref) => {
     const isUser = name === message.name; // 이 메세지가 본인이름일경우
-
+    console.log("dd");
+    if (sort === -1) {
+    } else if (message.type !== sort) {
+      //중요한 채팅만 sort , 소팅모드인데 안겹치면
+      return <></>;
+    }
     if (isUser) {
       return (
         <div ref={ref} className={`message ${isUser && "msg_user"}`}>
@@ -130,8 +139,95 @@ export default function Chatting({ roomId, name }) {
 
   return (
     <Flex direction="column" h="full">
-      <Box h="6" justify="center">
-        <Heading size="xs">#전체 채팅</Heading>
+      <Box h="6" justify="center" p="2">
+        <Popover>
+          <PopoverTrigger>
+            <Link>
+              {" "}
+              <Heading size="xs">{sort >= 0 ? "#" + chatList[sort] : "#모두 보기"}</Heading>
+            </Link>
+          </PopoverTrigger>
+          <Portal>
+            <PopoverContent>
+              <PopoverCloseButton />
+              <PopoverBody>
+                <Wrap w="full" mt="12px" spacing="4px">
+                  <Button
+                    onClick={() => {
+                      setSort(-1);
+                    }}
+                    h="23px"
+                    border="5px"
+                    borderRadius="30px"
+                    px="0"
+                    p="0"
+                    bg="grey">
+                    <Text fontSize="12px" color="white" paddingX="7px">
+                      모두 보기
+                    </Text>
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setSort(1);
+                    }}
+                    h="23px"
+                    border="5px"
+                    borderRadius="30px"
+                    p="0"
+                    px="0"
+                    bg="notice">
+                    <Text fontSize="12px" color="white" paddingX="7px">
+                      중요한 채팅
+                    </Text>
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setSort(2);
+                    }}
+                    h="23px"
+                    border="5px"
+                    borderRadius="30px"
+                    p="0"
+                    px="0"
+                    bg="tts">
+                    <Text fontSize="12px" color="white" paddingX="7px">
+                      텍스트로 말하기
+                    </Text>
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setSort(0);
+                    }}
+                    h="23px"
+                    border="5px"
+                    borderRadius="30px"
+                    p="p"
+                    px="0"
+                    bg="primary">
+                    <Text fontSize="12px" color="white" paddingX="7px">
+                      일반 채팅
+                    </Text>
+                  </Button>
+
+                  <Button
+                    onClick={() => {
+                      setSort(4);
+                    }}
+                    h="23px"
+                    border="5px"
+                    borderRadius="30px"
+                    p="0"
+                    px="0"
+                    bg="hyperlink">
+                    <Text fontSize="12px" color="white" paddingX="7px">
+                      하이퍼 링크
+                    </Text>
+                  </Button>
+                </Wrap>
+              </PopoverBody>
+            </PopoverContent>
+          </Portal>
+        </Popover>
       </Box>
 
       <Box flex="1" overflow="auto" p="2">
@@ -145,9 +241,9 @@ export default function Chatting({ roomId, name }) {
             <MakingPull roomId={roomId} setIsPullOpen={setIsPullOpen} />
           </Box>
         )}
-        {messages.map(({ id, message }) => (
-          <Message key={id} message={message} />
-        ))}
+        {messages.map(({ id, message }) => {
+          return <Message key={id} message={message} />;
+        })}
       </Box>
 
       <Box p="2">
@@ -210,7 +306,7 @@ export default function Chatting({ roomId, name }) {
                       }}>
                       투표
                     </Button>
-                    <Button
+                    {/* <Button
                       colorScheme="blue"
                       size="sm"
                       m="1"
@@ -228,7 +324,7 @@ export default function Chatting({ roomId, name }) {
                         }
                       }}>
                       랜덤 뽑기
-                    </Button>
+                    </Button> */}
                   </PopoverBody>
                 </PopoverContent>
               </Portal>
