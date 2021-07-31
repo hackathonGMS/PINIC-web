@@ -149,8 +149,8 @@ export default function Video({id, handelConnect}) {
      <div style={{height: '100%', padding: '20px'}}>
       <div style={{height: '100%', display: 'flex', flexWrap: 'wrap', alignContent: 'space-between'}}>
         <div style={{ width: '100%'}}>
-          <div style={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
-            <div className="row" id="otherVideos" style={{display: 'flex'}} video={{ padding: '100px'}}/>
+          <div>
+            <div className="row" id="otherVideos" style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}} video={{ padding: '100px'}}/>
           </div>
         </div> 
         <div style={{ width: '100%'}}>

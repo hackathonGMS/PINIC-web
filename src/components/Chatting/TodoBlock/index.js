@@ -59,7 +59,7 @@ export const Todo = ({roomId}) => {
   return (
     <Box w="full" bg="black" borderRadius="10px" p="10px">
       <Box w="full" h="1px" bg="black" mt="3px" mb="10px"></Box>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '160px', overflowY: 'auto', paddingRight: '5px'}}>
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '60px', maxHeight: '160px', overflowY: 'auto', paddingRight: '5px'}}>
         {
           notConfirmList().map((todo, index) => (
             <div key={index} style={{ display: 'flex', justifyContent: 'space-between'}}>
