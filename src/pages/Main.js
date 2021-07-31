@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 import Chatting from "../components/Chatting";
 import Video from "../components/Video";
 import { Todo } from "../components/Chatting/TodoBlock";
+import PullBlock from '../components/Chatting/PullBlock';
 
 export const Main = (props) => {
   const [isOpen, setIsOpen] = useState(false);
