@@ -6,6 +6,7 @@ import AlertMsg from "../components/AlertMsg";
 import React, { useState, useEffect } from "react";
 import Chatting from "../components/Chatting";
 import Video from "../components/Video";
+import { Todo } from "../components/Chatting/TodoBlock";
 
 export const Main = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,13 +43,19 @@ export const Main = (props) => {
           </PicnicBlock>
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>
-          <PicnicBlock header={"가상배경"}>
-            <h1>ddd</h1>
+          <PicnicBlock header={"사과같은 내 얼굴"}>
+            <video
+              id="myVideo"
+              className="remote-video" 
+              autoPlay
+              muted
+              style={{backgroundColor: 'black', borderRadius: '10px', width: '100%' , height: '100%'}}
+            />
           </PicnicBlock>
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>
-          <PicnicBlock header={"캘린더"}>
-            <h1>ddd</h1>
+          <PicnicBlock header={"회의 안건"}>
+            <Todo roomId={String(props.match.params.id)}/>
           </PicnicBlock>
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>

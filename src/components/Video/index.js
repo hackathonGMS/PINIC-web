@@ -150,13 +150,6 @@ export default function Video({id, handelConnect}) {
       <div style={{height: '100%', display: 'flex', flexWrap: 'wrap', alignContent: 'space-between'}}>
         <div style={{ width: '100%'}}>
           <div style={{ display: 'flex', justifyContent: 'center', width: '100%'}}>
-            <video
-              id="myVideo"
-              className="remote-video" 
-              autoPlay
-              muted
-              style={{backgroundColor: 'black', borderRadius: '10px'}}
-            />
             <div className="row" id="otherVideos" style={{display: 'flex'}} video={{ padding: '100px'}}/>
           </div>
         </div> 
