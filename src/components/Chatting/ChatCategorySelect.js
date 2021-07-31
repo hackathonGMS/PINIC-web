@@ -51,16 +51,6 @@ function ChatCategorySelect({ setChatMode }) {
         </Button>
         <Button
           onClick={() => {
-            setChatMode(3);
-          }}
-          h="23px"
-          border="5px"
-          borderRadius="30px"
-          p="0"
-          px="0"
-          bg="calander"></Button>
-        <Button
-          onClick={() => {
             setChatMode(4);
           }}
           h="23px"
