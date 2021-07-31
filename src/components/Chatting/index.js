@@ -23,7 +23,7 @@ import {
 import React, { useState, useEffect, forwardRef } from "react";
 import { IoEllipsisHorizontalCircleSharp, IoPaperPlane } from "react-icons/io5";
 
-import db from "./firbase";
+import db, { FBcreateRandom } from "./firbase";
 import MakingPull from "./ChatBubble/MakingPull";
 import MakingRandom from "./ChatBubble/MakingRandom";
 import ChatCategorySelect from "./ChatCategorySelect";
@@ -34,8 +34,8 @@ import { TTS } from "./TTS/textSound";
 
 export default function Chatting({ roomId, name }) {
   const [chatMode, setChatMode] = useState(0);
-  const [isPullOpen, setIsPullOpen] = useState(true);
-  const [isRandomOpen, setIsRandomOpen] = useState(true);
+  const [isPullOpen, setIsPullOpen] = useState(false);
+  const [isRandomOpen, setIsRandomOpen] = useState(false);
   //일반,중요,텍스트,일정,하이퍼링크
   const colorList = ["primary", "notice", "tts", "calander", "hyperlink"];
   const chatList = ["일반 채팅", "중요한 채팅", "텍스트로 말하기", "일정 정해요", "링크 전송"];
@@ -91,7 +91,7 @@ export default function Chatting({ roomId, name }) {
       return;
     }
     db.collection("Chatting")
-      .doc(roomId)
+      .doc(String(roomId))
       .collection("data")
       .add({
         message: message,
@@ -133,21 +133,22 @@ export default function Chatting({ roomId, name }) {
       <Box h="6" justify="center">
         <Heading size="xs">#전체 채팅</Heading>
       </Box>
+
       <Box flex="1" overflow="auto" p="2">
+        {isRandomOpen && (
+          <Box>
+            <MakingRandom roomId={roomId} setIsRandomOpen={setIsRandomOpen} />
+          </Box>
+        )}
+        {isPullOpen && (
+          <Box>
+            <MakingPull roomId={roomId} setIsPullOpen={setIsPullOpen} />
+          </Box>
+        )}
         {messages.map(({ id, message }) => (
           <Message key={id} message={message} />
         ))}
       </Box>
-      {isRandomOpen && (
-        <Box p="2">
-          <MakingRandom setIsRandomOpen={setIsRandomOpen} />
-        </Box>
-      )}
-      {isPullOpen && (
-        <Box p="2">
-          <MakingPull setIsPullOpen={setIsPullOpen} />
-        </Box>
-      )}
 
       <Box p="2">
         <ChatCategorySelect setChatMode={setChatMode} />
@@ -190,8 +191,44 @@ export default function Chatting({ roomId, name }) {
                   <PopoverHeader>피크닉만의 기능을 이용해보세요!</PopoverHeader>
                   <PopoverCloseButton />
                   <PopoverBody>
-                    <Button colorScheme="blue">투표</Button>
-                    <Button colorScheme="blue">랜덤 뽑기</Button>
+                    <Button
+                      colorScheme="blue"
+                      size="sm"
+                      m="1"
+                      onClick={() => {
+                        if (isPullOpen) {
+                          toast({
+                            title: "이미 투표 생성 중이에요.",
+                            status: "warning",
+                            position: "top-right",
+                            duration: 1000,
+                            isClosable: true,
+                          });
+                        } else {
+                          setIsPullOpen(true);
+                        }
+                      }}>
+                      투표
+                    </Button>
+                    <Button
+                      colorScheme="blue"
+                      size="sm"
+                      m="1"
+                      onClick={() => {
+                        if (isPullOpen) {
+                          toast({
+                            title: "이미 랜덤 뽑기를 생성 중이에요.",
+                            status: "warning",
+                            position: "top-right",
+                            duration: 4000,
+                            isClosable: true,
+                          });
+                        } else {
+                          setIsRandomOpen(true);
+                        }
+                      }}>
+                      랜덤 뽑기
+                    </Button>
                   </PopoverBody>
                 </PopoverContent>
               </Portal>

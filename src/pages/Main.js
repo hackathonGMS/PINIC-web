@@ -60,7 +60,7 @@ export const Main = (props) => {
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>
           <PicnicBlock header={"[투표]"}>
-            <h1>ddd</h1>
+            <PullBlock roomId={String(props.match.params.id)} />
           </PicnicBlock>
         </GridItem>
       </Grid>
