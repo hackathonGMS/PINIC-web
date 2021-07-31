@@ -34,8 +34,8 @@ import { TTS } from "./TTS/textSound";
 
 export default function Chatting({ roomId, name }) {
   const [chatMode, setChatMode] = useState(0);
-  const [isPullOpen, setIsPullOpen] = useState(true);
-  const [isRandomOpen, setIsRandomOpen] = useState(true);
+  const [isPullOpen, setIsPullOpen] = useState(false);
+  const [isRandomOpen, setIsRandomOpen] = useState(false);
   //일반,중요,텍스트,일정,하이퍼링크
   const colorList = ["primary", "notice", "tts", "calander", "hyperlink"];
   const chatList = ["일반 채팅", "중요한 채팅", "텍스트로 말하기", "일정 정해요", "링크 전송"];
@@ -133,21 +133,22 @@ export default function Chatting({ roomId, name }) {
       <Box h="6" justify="center">
         <Heading size="xs">#전체 채팅</Heading>
       </Box>
+
       <Box flex="1" overflow="auto" p="2">
+        {isRandomOpen && (
+          <Box>
+            <MakingRandom roomId={roomId} setIsRandomOpen={setIsRandomOpen} />
+          </Box>
+        )}
+        {isPullOpen && (
+          <Box>
+            <MakingPull roomId={roomId} setIsPullOpen={setIsPullOpen} />
+          </Box>
+        )}
         {messages.map(({ id, message }) => (
           <Message key={id} message={message} />
         ))}
       </Box>
-      {isRandomOpen && (
-        <Box p="2">
-          <MakingRandom roomId={roomId} setIsRandomOpen={setIsRandomOpen} />
-        </Box>
-      )}
-      {isPullOpen && (
-        <Box p="2">
-          <MakingPull roomId={roomId} setIsPullOpen={setIsPullOpen} />
-        </Box>
-      )}
 
       <Box p="2">
         <ChatCategorySelect setChatMode={setChatMode} />
@@ -193,6 +194,7 @@ export default function Chatting({ roomId, name }) {
                     <Button
                       colorScheme="blue"
                       size="sm"
+                      m="1"
                       onClick={() => {
                         if (isPullOpen) {
                           toast({
@@ -211,6 +213,7 @@ export default function Chatting({ roomId, name }) {
                     <Button
                       colorScheme="blue"
                       size="sm"
+                      m="1"
                       onClick={() => {
                         if (isPullOpen) {
                           toast({

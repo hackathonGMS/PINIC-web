@@ -35,26 +35,15 @@ export const FBsendMessage = (e) => {
   // 메세지 화면에 세팅
 };
 
-export const FBcreatePull = (roomId, title, list, isAnoun, isMulti) => {
+export const FBcreatePull = (roomId, title, lists, isAnoun, isMulti) => {
   return db.collection("Chatting").doc(String(roomId)).collection("Pull").doc(String(title)).set({
     title: title,
-    name: "james",
+    lists: lists,
+    isAnoun: isAnoun,
+    isMulti: isMulti,
   });
 };
 
-export const FBcreatePull_ = (e) => {
-  db.collection("Chatting")
-    .doc(String(e.roomId))
-    .collection("Pull")
-    .doc(e.title)
-    .set({
-      at: new Date(),
-      title: e.title || "",
-      body: e.pullList,
-      count: 0,
-    })
-    .collection("who");
-};
 export const FBcreateRandom = (e) => {
   db.collection("Chatting")
     .doc(String(e.roomId))

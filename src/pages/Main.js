@@ -6,12 +6,11 @@ import AlertMsg from "../components/AlertMsg";
 import React, { useState, useEffect } from "react";
 import Chatting from "../components/Chatting";
 import Video from "../components/Video";
-
+import PullBlock from "../components/Chatting/PullBlock";
 export const Main = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
   return (
     <>
       {console.log(props)}
@@ -32,7 +31,7 @@ export const Main = (props) => {
         </GridItem>
         <GridItem rowSpan={7} colSpan={9}>
           <PicnicBlock>
-           <Video id={String(props.match.params.id)}/>
+            <Video id={String(props.match.params.id)} />
           </PicnicBlock>
         </GridItem>
         <GridItem rowSpan={12} colSpan={3}>
@@ -52,7 +51,7 @@ export const Main = (props) => {
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>
           <PicnicBlock header={"[투표]"}>
-            <h1>ddd</h1>
+            <PullBlock roomId={String(props.match.params.id)} />
           </PicnicBlock>
         </GridItem>
       </Grid>
