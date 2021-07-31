@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, Spacer, Text, Wrap } from "@chakra-ui/react";
+import { Box, Button, Flex, Link as ChakraLink, Heading, Spacer, Text, Wrap } from "@chakra-ui/react";
 
 function OtherChat({ message, name, at, type }) {
   return (
@@ -8,9 +8,17 @@ function OtherChat({ message, name, at, type }) {
       </Text>
       <Flex w="full">
         <Box maxW="60%" bg={type} borderBottomRadius="10px" borderRightRadius="10px" p="5px">
-          <Text color="white" fontSize="12px" fontWeight="bold">
-            {message}
-          </Text>
+          {type === "hyperlink" ? (
+            <ChakraLink href={message}>
+              <Text color="white" fontSize="12px" fontWeight="bold">
+                {message}
+              </Text>
+            </ChakraLink>
+          ) : (
+            <Text color="white" fontSize="12px" fontWeight="bold">
+              {message}
+            </Text>
+          )}
         </Box>
         <Box>
           <Text fontSize="9px" color="#909090" ml="7px" verticalAlign="bottom">

@@ -1,5 +1,5 @@
-import { Box, Button, Flex, Heading, Spacer, Text, Wrap } from "@chakra-ui/react";
-
+import { Box, Button, Link as ChakraLink, Flex, Heading, Spacer, Text, Wrap } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 function MyChat({ message, name, at, type }) {
   return (
     <Box w="full">
@@ -8,13 +8,22 @@ function MyChat({ message, name, at, type }) {
       </Text>
       <Flex w="full" y="full">
         <Spacer />
+
         <Text fontSize="9px" color="#909090" mr="7px" verticalAlign="bottom">
           {at}
         </Text>
         <Box maxW="60%" bg={type} borderBottomRadius="10px" borderLeftRadius="10px" p="5px">
-          <Text color="white" fontSize="12px" fontWeight="bold">
-            {message}
-          </Text>
+          {type === "4" ? (
+            <ChakraLink>
+              <Text color="white" fontSize="12px" fontWeight="bold">
+                {message}
+              </Text>
+            </ChakraLink>
+          ) : (
+            <Text color="white" fontSize="12px" fontWeight="bold">
+              {message}
+            </Text>
+          )}
         </Box>
       </Flex>
     </Box>
