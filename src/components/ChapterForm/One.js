@@ -9,7 +9,7 @@ function One({ setStep, setParty }) {
   };
   return (
     <>
-      <Box w="400px" mt="10" h="142px">
+      <Box w="full" mt="10" h="142px">
         <Logo />
         <Text mt="10" fontSize="16px" color="white">
           피크닉 새로 생성하기
