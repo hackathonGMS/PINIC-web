@@ -13,6 +13,7 @@ export const Join = (props) => {
         <Logo />
         <InputCode />
         <Button Link="/Create" text="새 피크닉 생성하러 가기" variant="main_button" />
+        <Button Link="/Explan" text="설명보러가기" variant="main_button" />
       </Flex>
     </Container>
   );
