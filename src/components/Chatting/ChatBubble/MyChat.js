@@ -10,7 +10,7 @@ function MyChat({ message, name, at, type }) {
         <Spacer />
 
         <Text fontSize="9px" color="#909090" mr="7px" verticalAlign="bottom">
-          {at}
+          at
         </Text>
         <Box maxW="60%" bg={type} borderBottomRadius="10px" borderLeftRadius="10px" p="5px">
           {type === "4" ? (
