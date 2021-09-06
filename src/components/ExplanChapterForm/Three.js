@@ -1,70 +1,29 @@
-import { Button as ChakraButton, Text, Box, Center, VStack } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import Button from "../Button";
-import db, { FBcreateRandom, FBcreateRoom } from "../Chatting/firbase";
-function Three({ setStep, party, title }) {
+import { Input, Text, Flex, Button, Box, Container, Image, Center } from "@chakra-ui/react";
+
+import Logo from "../Logo";
+function Three({ setStep }) {
   const handleNextStep = () => {
-    setStep(0);
+    setStep(3);
   };
-  function randomNum() {
-    const min = 100000;
-    const max = 999999;
-    const randNum = Math.floor(Math.random() * (max - min + 1)) + min;
-    return randNum;
-  }
-
-  const codeNumber = randomNum();
-
   return (
-    <Box w="435px" h="710px" color="white">
-      <VStack align="left">
-        <Link as={Link} to="/">
-          <Text fontWeight="bold" fontSize="32px" mt="0px" mb="30px">
-            PICNIC
-          </Text>
-        </Link>
-        <Text m="0" fontSize="16px">
-          피크닉 새로 생성하기
-        </Text>
-        <Text fontWeight="bold" m="0px" p="0px" fontSize="24px">
-          Step 3. 피크닉 준비 완료!
-        </Text>
-        <Box w="60px" h="2px" mt="15px" bg="white" />
-      </VStack>
-      <VStack align="left" mt="33px">
-        <Text fontSize="21px" mb="0px">
-          [{party}] 소속
-        </Text>
-        <Text fontSize="21px" m="0px">
-          {title}
-        </Text>
-      </VStack>
-      <Center w="100%" h="97px" mt="28px">
-        <VStack>
-          <Text fontSize="16px" align="center">
-            피크닉 코드를 참여자들에게 알려주세요
-          </Text>
-          <Center bg="white" w="379px" h="61px" m="0px">
-            <Center bg="#7879F1" w="373px" h="55px" m="0px">
-              <Text fontWeight="bold" fontSize="28px" letterSpacing="28px" ml="28px">
-                {codeNumber}
-              </Text>
-            </Center>
-          </Center>
-        </VStack>
-      </Center>
-      <Center w="100%" h="111px" mt="65px">
-        <VStack w="full">
-          <Button
-            Link={`/ready/${codeNumber}`}
-            onClick={() => FBcreateRoom(codeNumber, codeNumber, party, title)}
-            text="피크닉 시작!"
-            variant="main_button"
-          />
-          <Button Link="/" text="홈으로" variant="main_button"/>
-        </VStack>
-      </Center>
-    </Box>
+    <>
+    <Logo />
+        <Box mb="39px">
+      <Text mt="10" fontSize="16px" color="white">
+        피크닉 사용방법
+      </Text>
+      <Text m="0px" p="0px" fontSize="24px" color="white">
+        Step 2. [PICNIC 방 만들기]
+      </Text>
+      <Text m="0px" p="0px" fontSize="24px" color="white">
+        안건을 적어주세요. 안건을 적지 않아도 좋아요.
+      </Text>
+        </Box>
+        <Image boxSize="400px" src="../images/image1.png" alignSelf="mid"></Image>
+    <Button onClick={handleNextStep} mt="69px" maxW="300px" w="100%" textColor="#7879F1">
+        <Text>다음</Text>
+    </Button>
+    </>
   );
 }
 
