@@ -3,7 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 
-import { Join, Create, Main, Participate, Explan } from "./pages";
+import { Join, Create, Main, Participate, Explan, Meeting } from "./pages";
 
 function App() {
   const [name, setName] = useState();
@@ -38,6 +38,9 @@ function App() {
                 </Route>
                 <Route exact path="/explan">
                   <Explan />
+                </Route>
+                <Route exact path="/meeting">
+                  <Meeting />
                 </Route>
               </Switch>
             </AnimatePresence>
