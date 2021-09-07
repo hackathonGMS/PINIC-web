@@ -1,5 +1,5 @@
 import { Logo, InputCode, Button } from "../components";
-import { Box, Flex, Heading, Text, VStack, Container, Divider, HStack } from "@chakra-ui/react";
+import {Button as chakraButton , Box, Flex, Heading, Text, VStack, Container, Divider, HStack } from "@chakra-ui/react";
 import ChapterForm from "../components/ChapterForm";
 export const Meeting = () => {
   return (
@@ -34,6 +34,13 @@ export const Meeting = () => {
             <VStack w="100%" align="left">
                 <Text fontSize="24px">채팅 History</Text>
                 <Divider w="60px" border="2px" borderColor="white"/>
+                <HStack>
+                    <chakraButton color="black"> 일반 채팅 </chakraButton>
+                    <chakraButton bgColor="white"> 중요한 채팅 </chakraButton>
+                    <chakraButton bgColor="white"> 텍스트로 말하기 </chakraButton>
+                    <chakraButton bgColor="white"> 하이퍼 링크 </chakraButton>
+                    <chakraButton bgColor="white"> 일정 잡기 </chakraButton>
+                </HStack>
                 <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
                 flexDirection="column" overflowY="auto" bgColor="rgba(0,0,0,0.3)" padding="25px">
                     <Text>1번째 뽑기 | 커피당번 정하기</Text>
