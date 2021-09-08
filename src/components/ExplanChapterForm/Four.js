@@ -19,7 +19,9 @@ function Four({ setStep, setTitle }) {
         모든 준비가 완료되었어요! 참여자들에게 코드를 알려주세요
       </Text>
         </Box>
-        <Image boxSize="400px" src="../images/image1.png" alignSelf="mid"></Image>
+    <Center h="450px" alignItems="top">
+      <Image h="100%" objectFit="none" src="/ExplanImages/image4.png" alignSelf="mid"></Image>
+    </Center>
     <Button onClick={handleNextStep} mt="69px" maxW="300px" w="100%" textColor="#7879F1">
         <Text>다음</Text>
     </Button>

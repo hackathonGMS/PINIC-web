@@ -18,7 +18,10 @@ function Nine({ setStep }) {
         이제 준비가 끝났어요! PICNIC을 시작해보세요!
       </Text>
     </Box>
-    <Button Link="/" text="홈으로" variant="main_button"/>
+    <Box h="50px"></Box>
+    <Box w="70%" mt="50px">
+      <Button Link="/" text="홈으로" variant="main_button"/>
+    </Box>
     </>
   );
 }

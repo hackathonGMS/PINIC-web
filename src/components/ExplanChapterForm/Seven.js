@@ -19,7 +19,9 @@ function Seven({ setStep, setTitle }) {
         피크닉은 채팅 유형을 지정하여 채팅할 수 있어요
       </Text>
         </Box>
-        <Image boxSize="400px" src="../images/image1.png" alignSelf="mid"></Image>
+    <Center h="450px" alignItems="top">
+      <Image h="100%" objectFit="none" src="/ExplanImages/image7.png" alignSelf="mid"></Image>
+    </Center>
     <Button onClick={handleNextStep} mt="69px" maxW="300px" w="100%" textColor="#7879F1">
         <Text>다음</Text>
     </Button>

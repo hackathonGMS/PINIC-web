@@ -19,7 +19,9 @@ function Eight({ setStep, setTitle }) {
         미팅 중 투표나 랜덤 뽑기도 할 수 있어요
       </Text>
         </Box>
-        <Image boxSize="400px" src="../images/image1.png" alignSelf="mid"></Image>
+    <Center h="450px" alignItems="top">
+      <Image h="100%" objectFit="none" src="/ExplanImages/image8.png" alignSelf="mid"></Image>
+    </Center>
     <Button onClick={handleNextStep} mt="69px" maxW="300px" w="100%" textColor="#7879F1">
         <Text>다음</Text>
     </Button>

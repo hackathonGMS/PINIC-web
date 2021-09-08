@@ -19,7 +19,9 @@ function Three({ setStep }) {
         안건을 적어주세요. 안건을 적지 않아도 좋아요.
       </Text>
         </Box>
-        <Image boxSize="400px" src="../images/image1.png" alignSelf="mid"></Image>
+    <Center h="450px" alignItems="top">
+      <Image h="100%" objectFit="none" src="/ExplanImages/image3.png" alignSelf="mid"></Image>
+    </Center>
     <Button onClick={handleNextStep} mt="69px" maxW="300px" w="100%" textColor="#7879F1">
         <Text>다음</Text>
     </Button>
