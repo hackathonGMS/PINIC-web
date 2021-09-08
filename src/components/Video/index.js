@@ -41,6 +41,7 @@ export default function Video({id, handelConnect}) {
   const [videoState, setVideoState] = useState(false);
   const [audioState, setAudioState] = useState(false);
   const [handle, setHandle] = useState(false);
+  
 
   const listener = {
     onConnect(chid) {
@@ -61,7 +62,7 @@ export default function Video({id, handelConnect}) {
       console.log(`remon.listener.onError: ${remon.getChannelId()} ${error}`);
     },
     onStat(result) {},
-    onRoomEvent(result){
+    onRoomEvent(result) {
       switch (result.event) {
         case 'join':
           if (!remonRoom[result.channel.id]) {
@@ -87,7 +88,8 @@ export default function Video({id, handelConnect}) {
             delete remonRoom[result.channel.id]
           }
           break;
-        }
+        default:
+      }
       console.log(`EVENT FIRED: onRoomEvent channel Id : ${remon.getChannelId()}`)
       console.log(`EVENT FIRED: onRoomEvent: ${JSON.stringify(result)}`)
     }
@@ -142,7 +144,7 @@ export default function Video({id, handelConnect}) {
     setAudioState(!audioState);
   }
   useEffect(() => {
-    start();
+    if (!isConnected) start();
   }, [handelConnect]);
 
   return (
@@ -157,6 +159,7 @@ export default function Video({id, handelConnect}) {
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <button onClick={hadleMuteMyVideo} style={{marginRight: '10px'}}>{ !videoState ? '화면 끄기' : '화면 켜기'}</button>
             <button onClick={handleMuteMyAudio} style={{marginRight: '10px'}}>{ !audioState ? '음소거' : '음소거 해제'}</button>
+            
           </div>
         </div>
       </div>

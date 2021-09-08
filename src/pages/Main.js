@@ -12,7 +12,8 @@ import PullBlock from '../components/Chatting/PullBlock';
 export const Main = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [handelConnect, setHandleConnect] = useState(false);
-  
+  const [test, setTest] = useState(false);
+
   useEffect(() => {
   }, []);
   return (
@@ -52,6 +53,7 @@ export const Main = (props) => {
               muted
               style={{backgroundColor: 'black', borderRadius: '10px', width: '100%' , height: '100%'}}
             />
+            <canvas id='overlay'/>
           </PicnicBlock>
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>
