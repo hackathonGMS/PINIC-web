@@ -8,7 +8,7 @@ function OtherChat({ message, name, at, type }) {
       </Text>
       <Flex w="full">
         <Box maxW="60%" bg={type} borderBottomRadius="10px" borderRightRadius="10px" p="5px">
-          {type === "hyperlink" ? (
+          {type === "link" ? (
             <ChakraLink href={message}>
               <Text color="white" fontSize="12px" fontWeight="bold">
                 {message}
