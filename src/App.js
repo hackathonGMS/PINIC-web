@@ -5,7 +5,7 @@ import { Switch, Route } from "react-router-dom";
 import { socket, SocektEventEnum, disconnect } from "./api/connect";
 import db from "./components/Chatting/firbase";
 
-import { Join, Create, Main, Participate } from "./pages";
+import { Join, Create, Main, Participate, Explan } from "./pages";
 
 function App() {
   const [name, setName] = useState();
@@ -48,6 +48,9 @@ function App() {
                 </Route>
                 <Route exact path="/create">
                   <Create />
+                </Route>
+                <Route exact path="/explan">
+                  <Explan />
                 </Route>
               </Switch>
             </AnimatePresence>
