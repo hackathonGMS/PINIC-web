@@ -8,12 +8,10 @@ import App from "./App";
 // import FaceDetectionTest from './Test/FaceDetectionTest';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ChakraProvider>
-  </React.StrictMode>,
+  <ChakraProvider theme={theme}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ChakraProvider>,
   document.getElementById("root")
 );

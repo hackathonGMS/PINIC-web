@@ -1,7 +1,8 @@
 import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-export default function AlertMsg({ isOpen, setIsOpen, setHandleConnect}) {
+import { disconnect } from "../../api/connect";
+export default function AlertMsg({ isOpen, setIsOpen, setHandleConnect }) {
   const onClose = () => setIsOpen(false);
   const cancelRef = useRef();
 
@@ -21,7 +22,14 @@ export default function AlertMsg({ isOpen, setIsOpen, setHandleConnect}) {
                 취소
               </Button>
               <Link to="/">
-                <Button colorScheme="red" onClick={() => { onClose(); setHandleConnect(true);}} ml={3}>
+                <Button
+                  colorScheme="red"
+                  onClick={() => {
+                    onClose();
+                    disconnect();
+                    setHandleConnect(true);
+                  }}
+                  ml={3}>
                   나가기
                 </Button>
               </Link>

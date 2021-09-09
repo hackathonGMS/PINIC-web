@@ -13,7 +13,7 @@ function MyChat({ message, name, at, type }) {
           {at}
         </Text>
         <Box maxW="60%" bg={type} borderBottomRadius="10px" borderLeftRadius="10px" p="5px">
-          {type === "4" ? (
+          {type === "link" ? (
             <ChakraLink>
               <Text color="white" fontSize="12px" fontWeight="bold">
                 {message}

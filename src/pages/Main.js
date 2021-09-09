@@ -1,6 +1,6 @@
 import { Logo, InputCode } from "../components";
 import { Link } from "react-router-dom";
-import { Grid, GridItem, Heading, Link as ChakraLink, Center, HStack } from "@chakra-ui/react";
+import { Grid, GridItem, Tabs, Tab, TabList, TabPanels, TabPanel, Heading, Link as ChakraLink, Text, HStack, Box } from "@chakra-ui/react";
 import PicnicBlock from "../components/PicnicBlock";
 import AlertMsg from "../components/AlertMsg";
 import React, { useState, useEffect, useRef } from "react";
@@ -17,12 +17,30 @@ export const Main = (props) => {
   const [emoticonState, setEmoticonState] = useState(false);
   const [myRemonId, setMyRemonId] = useState('');
   const video = useRef(null);
-
-  useEffect(() => {
-  }, []);
+  const [isBlock, setIsBlock] = useState(0);
+  
+  useEffect(() => {}, []);
+  const handleClick = (index) => {
+    setIsBlock(index);
+  };
+  const SwitchButton = (onClick) => {
+    return (
+      <>
+        <ChakraLink onClick={() => onClick(1)}>
+          <Text color="white" fontSize="18px" fontWeight="bold">
+            투표
+          </Text>
+        </ChakraLink>
+        <ChakraLink onClick={() => onClick(2)}>
+          <Text color="white" fontSize="18px" fontWeight="bold">
+            뽑기
+          </Text>
+        </ChakraLink>
+      </>
+    );
+  };
   return (
     <>
-      {console.log(props)}
       <Grid color="white" pb="3" pr="3" h="100vh" templateRows="repeat(12, 1fr)" templateColumns="repeat(12, 1fr)" gap={0}>
         <GridItem pl="3" colSpan={12}>
           <HStack h="full" justify="space-between" align="flex-end">
@@ -51,7 +69,7 @@ export const Main = (props) => {
         </GridItem>
         <GridItem rowSpan={12} colSpan={3}>
           <PicnicBlock>
-            <Chatting name={props.name} roomId={String(props.match.params.id)} />
+            <Chatting setIsBlock={setIsBlock} name={props.name} roomId={String(props.match.params.id)} />
           </PicnicBlock>
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>
@@ -61,12 +79,33 @@ export const Main = (props) => {
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>
           <PicnicBlock header={"회의 안건"}>
-            <Todo roomId={String(props.match.params.id)}/>
+            <Todo roomId={String(props.match.params.id)} />
           </PicnicBlock>
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>
-          <PicnicBlock header={"[투표]"}>
-            <PullBlock roomId={String(props.match.params.id)} />
+          <PicnicBlock>
+            <Tabs align="start" bg={"message"} borderTopRadius={"10px"} isFitted variant="unstyled" padding={0}>
+              <TabList>
+                <Tab _selected={{ color: "white", bg: "black" }} borderTopRadius={"15px"} padding={0}>
+                  <Text textAlign="left" fontSize="16px" fontWeight="bold">
+                    투표
+                  </Text>
+                </Tab>
+                <Tab _selected={{ color: "white", bg: "black" }} borderTopRadius={"15px"} padding={0}>
+                  <Text textAlign="left" fontSize="16px" fontWeight="bold">
+                    뽑기
+                  </Text>
+                </Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel padding={0}>
+                  <PullBlock roomId={String(props.match.params.id)} />
+                </TabPanel>
+                <TabPanel padding={0}>
+                  <RandomBlock roomId={String(props.match.params.id)} />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </PicnicBlock>
         </GridItem>
       </Grid>

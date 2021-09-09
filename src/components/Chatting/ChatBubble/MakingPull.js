@@ -2,7 +2,9 @@ import { Box, Button, Center, Checkbox, HStack, Input, Spacer, Text, Wrap, Close
 import React, { useState } from "react";
 import { FBcreatePull } from "../firbase";
 
-function MakingPull({ setIsPullOpen, roomId }) {
+//투표 제작 컴포넌트
+
+function MakingPull({ setIsPullOpen, setIsBlock, roomId }) {
   const [title, setTitle] = useState("");
   const [lists, setList] = useState([{ obj: "항목", count: 0 }]);
   const [isAnoun, setIsAnoun] = useState(false);
@@ -129,6 +131,7 @@ function MakingPull({ setIsPullOpen, roomId }) {
           onClick={() => {
             createPull();
             setIsPullOpen(false);
+            setIsBlock(1);
           }}
           w="90px"
           h="23px"

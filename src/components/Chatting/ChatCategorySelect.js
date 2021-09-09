@@ -16,7 +16,7 @@ function ChatCategorySelect({ setChatMode }) {
           borderRadius="30px"
           p="0"
           px="0"
-          bg="notice">
+          bg="important">
           <Text fontSize="12px" color="white" paddingX="7px">
             중요한 채팅
           </Text>
@@ -44,7 +44,7 @@ function ChatCategorySelect({ setChatMode }) {
           borderRadius="30px"
           p="p"
           px="0"
-          bg="primary">
+          bg="message">
           <Text fontSize="12px" color="white" paddingX="7px">
             일반 채팅
           </Text>
@@ -58,7 +58,7 @@ function ChatCategorySelect({ setChatMode }) {
           borderRadius="30px"
           p="0"
           px="0"
-          bg="hyperlink">
+          bg="link">
           <Text fontSize="12px" color="white" paddingX="7px">
             하이퍼 링크
           </Text>

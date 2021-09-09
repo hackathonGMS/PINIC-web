@@ -25,9 +25,9 @@ const PullBlock = ({ roomId }) => {
     //FBcreatePull(roomId, title, lists, isAnoun, isMulti);
   }, []);
   return (
-    <Box w="full" h="full" borderRadius="15px" bg="#323232" px="22px" pt="32px" pb="20px">
+    <Box w="full" h="full" bg="#323232" px="22px" pt="14px" pb="20px">
       <Flex direction="column" w="full" h="full">
-        <Text fontSize="18px" fontWeight="bold" color="white" mb="11px">
+        <Text textAlign="left" fontSize="18px" fontWeight="bold" color="white" mb="11px">
           {title}
         </Text>
         <Wrap spacing="8px">

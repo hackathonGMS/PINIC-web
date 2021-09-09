@@ -1,4 +1,4 @@
-import { Text, Box, Center, VStack, Input, Container, Flex } from "@chakra-ui/react";
+import { Text, Box, Center, VStack, Input, Container, Flex, HStack } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
@@ -71,7 +71,10 @@ export const Participate = ({ setName, match }) => {
           </Center>
           <Center w="100%" h="111px" mt="64px">
             <VStack w="full">
-              <Button Link={`/room/${match.params.id}`} text="회의 입장!" variant="main_button" />
+              <HStack>
+                <Button Link={`/meeting/${match.params.id}`} text="회의록보러가기" variant="main_button"/>
+                <Button Link={`/room/${match.params.id}`} text="회의 입장!" variant="main_button" />
+              </HStack>
               <Link to="/">
                 <Text as="ins" fontSize="16px" color="white">
                   돌아갈래요

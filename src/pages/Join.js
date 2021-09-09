@@ -1,5 +1,6 @@
 import { Logo, InputCode, Button } from "../components";
-import { Flex, Container, Link, Stack, StackProps, Text } from "@chakra-ui/react";
+import { Flex, Container, Stack, StackProps, Text, Box } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { pageVariants } from "../constants/animation";
 import { motion } from "framer-motion";
 
@@ -13,6 +14,12 @@ export const Join = (props) => {
         <Logo />
         <InputCode />
         <Button Link="/Create" text="새 피크닉 생성하러 가기" variant="main_button" />
+        <Box h="20px"/>
+        <Link to="/Explan">
+          <Text as="ins" fontSize="16px" color="white">
+            설명 보러가기
+          </Text>
+        </Link>
       </Flex>
     </Container>
   );
