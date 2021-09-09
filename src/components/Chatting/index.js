@@ -31,14 +31,15 @@ import MyChat from "./ChatBubble/MyChat";
 import OtherChat from "./ChatBubble/OtherChat";
 import ChatBar from "./ChatBubble/ChatBar";
 import { TTS } from "./TTS/textSound";
+import { disconnect, setRoomInfo, sendMsgToServer, SocektEventEnum, socket } from "../../api/connect";
 
-export default function Chatting({ roomId, name }) {
+export default function Chatting({ roomId, name, setIsBlock }) {
   const [chatMode, setChatMode] = useState(0);
   const [isPullOpen, setIsPullOpen] = useState(false);
   const [isRandomOpen, setIsRandomOpen] = useState(false);
   const [sort, setSort] = useState(-1);
   //일반,중요,텍스트,일정,하이퍼링크
-  const colorList = ["primary", "notice", "tts", "calander", "hyperlink"];
+  const colorList = ["message", "important", "tts", "calander", "link"];
   const chatList = ["일반 채팅", "중요한 채팅", "텍스트로 말하기", "일정 정해요", "링크 전송"];
   const chatHandler = () => {};
 
@@ -46,61 +47,77 @@ export default function Chatting({ roomId, name }) {
   const [messages, setMessages] = useState([]);
   const [message, setSendMessage] = useState("");
   const toast = useToast();
+  useEffect(() => {}, [messages]);
   useEffect(() => {
-    console.log(message.type);
-    console.log(sort);
-    db.collection("Chatting")
-      .doc(roomId)
-      .collection("data")
-      .onSnapshot((d) => {
-        if (d.docChanges().length < 3) {
-          d.docChanges().forEach((change) => {
-            if (change.type === "added" && change.doc.data().type === 2) {
-              TTS(change.doc.data().message);
-            }
-            if (change.type === "added" && change.doc.data().type === 1) {
-              toast({
-                title: "중요한 채팅이 올라왔어요!",
-                description: change.doc.data().message,
-                status: "success",
-                duration: 9000,
-                isClosable: true,
-              });
-            } else if (change.type === "added" && change.doc.data().type === 4) {
-              toast({
-                duration: 9000,
-                isClosable: true,
-                status: "info",
-                title: "새로운 링크가 올라왔어요!",
-                description: (
-                  <>
-                    <Text fontSize="18px">바로 이동하기</Text>
-                    <Text fontSize="18px" bold>
-                      <Link href={change.doc.data().message}>{change.doc.data().message}</Link>
-                    </Text>
-                  </>
-                ),
-              });
-            }
-          });
-        }
-        setMessages(d.docs.map((doc) => ({ id: doc.id, message: doc.data() })));
-      });
+    socket.on(SocektEventEnum.JOIN_ROOM_O, (data) => {
+      setMessages((message) => [...message, data]);
+    });
+
+    socket.on(SocektEventEnum.RECEIVEMESSAGE_O, (newMessage) => {
+      setMessages((message) => [...message, newMessage]);
+      console.log(newMessage.type);
+      if (newMessage.type === "tts") {
+        TTS(newMessage.content);
+      }
+      if (newMessage.type === "important") {
+        toast({
+          title: "중요한 채팅이 올라왔어요!",
+          description: newMessage.content,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      } else if (newMessage.type === "link") {
+        toast({
+          duration: 9000,
+          isClosable: true,
+          status: "info",
+          title: "새로운 링크가 올라왔어요!",
+          description: (
+            <>
+              <Text fontSize="18px">바로 이동하기</Text>
+              <Text fontSize="18px" bold>
+                <Link href={newMessage.content}>{newMessage.content}</Link>
+              </Text>
+            </>
+          ),
+        });
+      }
+    });
   }, []);
 
   const sendMessage = () => {
     if (!message.trim()) {
       return;
     }
-    db.collection("Chatting")
-      .doc(String(roomId))
-      .collection("data")
-      .add({
-        message: message,
-        name: name,
-        type: chatMode,
-        at: new Date().toLocaleTimeString(navigator.language, { hour: "2-digit", minute: "2-digit" }),
-      });
+    // db.collection("Chatting")
+    //   .doc(String(roomId))
+    //   .collection("data")
+    //   .add({
+    //     message: message,
+    //     name: name,
+    //     type: chatMode,
+    //     at: new Date().toLocaleTimeString(navigator.language, { hour: "2-digit", minute: "2-digit" }),
+    //   });
+    const date = new Date();
+    let time = "";
+    if (date.getHours() >= 12) {
+      if (date.getMinutes() < 10) {
+        time = `오후 ${date.getHours() - 12}:0${date.getMinutes()}`;
+      } else time = `오후 ${date.getHours() - 12}:${date.getMinutes()}`;
+    } else {
+      time = `오전 ${date.getHours()}:${date.getMinutes()}`;
+    }
+    const newMsg = {
+      type: colorList[chatMode],
+      name: name,
+      content: message,
+      time: time,
+    };
+    console.log(colorList[chatMode]);
+    sendMsgToServer(colorList[chatMode], message, roomId, name, time);
+    setMessages((message) => [...message, newMsg]);
+
     setChatMode(0);
     setSendMessage("");
 
@@ -114,27 +131,29 @@ export default function Chatting({ roomId, name }) {
 
   //01234 -1
   const Message = forwardRef(({ message }, ref) => {
-    const isUser = name === message.name; // 이 메세지가 본인이름일경우
-    console.log("dd");
+    const isUser = name === message?.name; // 이 메세지가 본인이름일경우
     if (sort === -1) {
-    } else if (message.type !== sort) {
+    } else if (message?.type !== sort) {
       //중요한 채팅만 sort , 소팅모드인데 안겹치면
       return <></>;
+    }
+    if (message.type === "alert_join_room") {
+      return <ChatBar at={message?.time} message={message?.content} name={message?.name} type={message?.type} />;
     }
     if (isUser) {
       return (
         <div ref={ref} className={`message ${isUser && "msg_user"}`}>
-          <MyChat at={message.at} message={message.message} name={message.name} type={colorList[message.type]} />
+          <MyChat at={message?.time} message={message?.content} name={message?.name} type={message?.type} />
         </div>
       );
     } else if (!isUser) {
       return (
         <div ref={ref} className={`message ${isUser && "msg_user"}`}>
-          <OtherChat at={message.at} message={message.message} name={message.name} type={colorList[message.type]} />
+          {console.log(colorList[message.type])}
+          <OtherChat at={message?.time} message={message?.content} name={message?.name} type={message?.type} />
         </div>
       );
     }
-    return <ChatBar at={message.at} message={message.message} name={message.name} type={message.type} />;
   });
 
   return (
@@ -175,7 +194,7 @@ export default function Chatting({ roomId, name }) {
                     borderRadius="30px"
                     p="0"
                     px="0"
-                    bg="notice">
+                    bg="important">
                     <Text fontSize="12px" color="white" paddingX="7px">
                       중요한 채팅
                     </Text>
@@ -203,7 +222,7 @@ export default function Chatting({ roomId, name }) {
                     borderRadius="30px"
                     p="p"
                     px="0"
-                    bg="primary">
+                    bg="message">
                     <Text fontSize="12px" color="white" paddingX="7px">
                       일반 채팅
                     </Text>
@@ -218,7 +237,7 @@ export default function Chatting({ roomId, name }) {
                     borderRadius="30px"
                     p="0"
                     px="0"
-                    bg="hyperlink">
+                    bg="link">
                     <Text fontSize="12px" color="white" paddingX="7px">
                       하이퍼 링크
                     </Text>
@@ -233,15 +252,15 @@ export default function Chatting({ roomId, name }) {
       <Box flex="1" overflow="auto" p="2">
         {isRandomOpen && (
           <Box>
-            <MakingRandom roomId={roomId} setIsRandomOpen={setIsRandomOpen} />
+            <MakingRandom setIsBlock={setIsBlock} roomId={roomId} setIsRandomOpen={setIsRandomOpen} />
           </Box>
         )}
         {isPullOpen && (
           <Box>
-            <MakingPull roomId={roomId} setIsPullOpen={setIsPullOpen} />
+            <MakingPull setIsBlock={setIsBlock} roomId={roomId} setIsPullOpen={setIsPullOpen} />
           </Box>
         )}
-        {messages.map(({ id, message }) => {
+        {messages.map((message, id) => {
           return <Message key={id} message={message} />;
         })}
       </Box>
@@ -306,7 +325,7 @@ export default function Chatting({ roomId, name }) {
                       }}>
                       투표
                     </Button>
-                    {/* <Button
+                    <Button
                       colorScheme="blue"
                       size="sm"
                       m="1"
@@ -324,7 +343,7 @@ export default function Chatting({ roomId, name }) {
                         }
                       }}>
                       랜덤 뽑기
-                    </Button> */}
+                    </Button>
                   </PopoverBody>
                 </PopoverContent>
               </Portal>

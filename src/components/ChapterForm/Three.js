@@ -1,8 +1,11 @@
 import { Button as ChakraButton, Text, Box, Center, VStack } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { createRoom, SocektEventEnum, socket } from "../../api/connect";
 import Button from "../Button";
 import db, { FBcreateRandom, FBcreateRoom } from "../Chatting/firbase";
 function Three({ setStep, party, title }) {
+  const [codeNumber, setCodeNumber] = useState(0);
   const handleNextStep = () => {
     setStep(0);
   };
@@ -13,7 +16,15 @@ function Three({ setStep, party, title }) {
     return randNum;
   }
 
-  const codeNumber = randomNum();
+  const makeRoom = async () => {
+    createRoom(party, title, "admin");
+    socket.on(SocektEventEnum.ROOM_CODE_O, (code) => {
+      setCodeNumber(code);
+    });
+  };
+  useEffect(() => {
+    makeRoom();
+  }, []);
 
   return (
     <Box w="435px" h="710px" color="white">
@@ -57,7 +68,9 @@ function Three({ setStep, party, title }) {
         <VStack w="full">
           <Button
             Link={`/ready/${codeNumber}`}
-            onClick={() => FBcreateRoom(codeNumber, codeNumber, party, title)}
+            onClick={() => {
+              FBcreateRoom(codeNumber, party, title);
+            }}
             text="피크닉 시작!"
             variant="main_button"
           />

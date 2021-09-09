@@ -38,7 +38,7 @@ export const MeetingForm = ( {match} ) => {
   return (
     <>
     <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white">
-        <Text color="white" fontSize="32px">PICNIC | 12345의 회의록</Text>
+        <Text color="white" fontSize="32px">PICNIC | {match.params.id}의 회의록</Text>
         <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
         flexDirection="column" overflowY="auto" bgColor="rgba(0,0,0,0.3)" padding="25px">
             <TitleInfo roomInfo={roomInfo} users={users}/>

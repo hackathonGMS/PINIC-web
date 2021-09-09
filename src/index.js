@@ -7,12 +7,10 @@ import { theme } from "./theme";
 import App from "./App";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ChakraProvider>
-  </React.StrictMode>,
+  <ChakraProvider theme={theme}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ChakraProvider>,
   document.getElementById("root")
 );

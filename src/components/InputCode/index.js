@@ -1,6 +1,7 @@
 import { Box, HStack, Heading, PinInput, PinInputField } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
+import { joinRoom } from "../../api/connect";
 
 import db from "../Chatting/firbase";
 
@@ -15,20 +16,21 @@ export default function InputCode(props) {
       alert("코드를 먼저 입력해주세요");
       return;
     }
-    db.collection("Chatting")
-      .doc(String(e))
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          history.push(`/ready/${e}`);
-        } else {
-          // doc.data() will be undefined in this case
-          alert("방이 존재하지 않습니다!");
-        }
-      })
-      .catch((error) => {
-        console.log("Error getting document:", error);
-      });
+    history.push(`/ready/${e}`);
+    // db.collection("Chatting")
+    //   .doc(String(e))
+    //   .get()
+    //   .then((doc) => {
+    //     if (doc.exists) {
+    //       history.push(`/ready/${e}`);
+    //     } else {
+    //       // doc.data() will be undefined in this case
+    //       alert("방이 존재하지 않습니다!");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error getting document:", error);
+    //   });
   };
   const inputStyle = {
     height: "50px",
