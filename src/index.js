@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import { theme } from "./theme";
 import App from "./App";
+// import FaceDetectionTest from './Test/FaceDetectionTest';
 
 ReactDOM.render(
   <ChakraProvider theme={theme}>
