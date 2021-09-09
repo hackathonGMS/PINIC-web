@@ -8,7 +8,7 @@ function Two({ setStep }) {
   return (
     <>
     <Logo />
-    <Box mb="39px">
+    <Box>
       <Text mt="10" fontSize="16px" color="white">
         피크닉 사용방법
       </Text>
@@ -25,6 +25,7 @@ function Two({ setStep }) {
     <Button onClick={handleNextStep} mt="69px" maxW="300px" w="100%" textColor="#7879F1">
         <Text>다음</Text>
     </Button>
+    <Box h="50px"/>
     </>
   );
 }

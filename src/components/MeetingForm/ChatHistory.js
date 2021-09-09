@@ -2,7 +2,7 @@ import { Logo, InputCode, Button as LinkButton } from "..";
 import { Box, Flex, Heading, Text, VStack, Container, Divider, HStack, Button } from "@chakra-ui/react";
 
 export const ChatHistory = ({messages, chatMode}) => {
-    const chatList = ["message", "important", "tts", "calander", "link"];
+    const chatList = ["message", "important", "tts", "calander"];
     const getMessage = () => {
         if(messages==null){
             return;

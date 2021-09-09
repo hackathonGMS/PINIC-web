@@ -78,7 +78,6 @@ export const MeetingForm = ( {match} ) => {
         <HStack spacing="27px">
             <LinkButton Link="/" text="돌아가기" variant="main_button"/>
             <LinkButton Link="/Meeting" text="로그 공유하기" variant="main_button"/>
-            <KakaoShareButton image="/image1" url="https://developers.kakao.com/sdk/js/kakao.js"></KakaoShareButton>
         </HStack>
     </VStack>
     </>
