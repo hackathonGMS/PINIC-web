@@ -1,4 +1,4 @@
-import { Box, Button, Center, CloseButton, HStack, Input, Spacer, Tag, TagCloseButton, Text, Wrap } from "@chakra-ui/react";
+import { Box, Button, Center, InputGroup, InputRightElement, Input, Spacer, Tag, TagCloseButton, Text, Wrap } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import db from "../firbase";
 import "./index.css";
@@ -29,7 +29,6 @@ export const Todo = ({ roomId }) => {
     setTodo({ value: e.target.value, done: false });
   };
   const changeTodoState = (t, state) => {
-    console.log(state, t);
     const newTodoList = [];
     for (let i in todoList) {
       if (todoList[i].value === t) {
@@ -57,10 +56,8 @@ export const Todo = ({ roomId }) => {
         }
       });
   }, []);
-  console.log(todoList);
   return (
-    <Box w="full" bg="black" borderRadius="10px" p="10px">
-      <Box w="full" h="1px" bg="black" mt="3px" mb="10px"></Box>
+    <Box w="full" h="full" bg="black" borderRadius="10px" p="10px" d="flex" justifyContent="space-between" flexDirection="column">
       <div
         className="scroll"
         style={{ display: "flex", flexDirection: "column", minHeight: "60px", maxHeight: "160px", overflowY: "auto", paddingRight: "5px" }}>
@@ -81,16 +78,22 @@ export const Todo = ({ roomId }) => {
           </div>
         ))}
       </div>
-      <Box w="full" h="1px" bg="black" mt="38px" mb="9px"></Box>
       <Center>
-        <div>
-          <input style={{ color: "black", width: "100%", marginBottom: "5px" }} value={todo.value} onChange={onChange} />
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <button onClick={onC} style={{}}>
-              add todo
-            </button>
-          </div>
-        </div>
+        <InputGroup size="xs">
+          <Input
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onC();
+              }
+            }}
+            pr="0.5rem"
+            fontSize="14px"
+            type="text"
+            value={todo.value}
+            onChange={onChange}
+            placeholder="체크리스트를 작성해주세요"
+          />
+        </InputGroup>
       </Center>
     </Box>
   );

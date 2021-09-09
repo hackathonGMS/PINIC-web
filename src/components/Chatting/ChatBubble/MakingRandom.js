@@ -2,6 +2,8 @@ import { Box, Button, Center, CloseButton, HStack, Input, Spacer, Tag, TagCloseB
 import React, { useState } from "react";
 import { randomPick, SocektEventEnum, socket } from "../../../api/connect";
 
+//뽑기 제작 컴포넌트
+
 function MakingRandom({ setIsRandomOpen, roomId, setIsBlock }) {
   const [lists, setList] = useState(["항목"]);
 
@@ -15,13 +17,13 @@ function MakingRandom({ setIsRandomOpen, roomId, setIsBlock }) {
     if (!lists[lists.length - 1]) {
       return alert("앞의 항목을 먼저 채워주세요.");
     }
-    console.log(lists);
     let a = [...lists, "항목"];
     setList([...a]);
   };
   const getResult = () => {
     randomPick(title, lists, roomId);
     setList(["항목"]);
+    setTitle("");
   };
 
   return (
@@ -113,6 +115,7 @@ function MakingRandom({ setIsRandomOpen, roomId, setIsBlock }) {
           onClick={() => {
             getResult();
             setIsBlock(2);
+            setIsRandomOpen(false);
           }}
           w="90px"
           h="23px"

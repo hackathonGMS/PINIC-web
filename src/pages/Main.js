@@ -14,7 +14,6 @@ export const Main = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [handelConnect, setHandleConnect] = useState(false);
   const [isBlock, setIsBlock] = useState(0);
-  const mode = ["투표/뽑기", "투표", "뽑기"];
   useEffect(() => {}, []);
   const handleClick = (index) => {
     setIsBlock(index);
@@ -37,7 +36,6 @@ export const Main = (props) => {
   };
   return (
     <>
-      {console.log(props)}
       <Grid color="white" pb="3" pr="3" h="100vh" templateRows="repeat(12, 1fr)" templateColumns="repeat(12, 1fr)" gap={0}>
         <GridItem pl="3" colSpan={12}>
           <HStack h="full" justify="space-between" align="flex-end">
@@ -79,17 +77,17 @@ export const Main = (props) => {
         </GridItem>
         <GridItem rowSpan={4} colSpan={3}>
           <PicnicBlock>
-            <Tabs align="start" bg={"message"} isFitted variant="unstyled" padding={0}>
+            <Tabs align="start" bg={"message"} borderTopRadius={"10px"} isFitted variant="unstyled" padding={0}>
               <TabList>
-                <Tab _selected={{ color: "white", bg: "black" }} padding={0}>
-                  <Heading textAlign="left" size="xs">
+                <Tab _selected={{ color: "white", bg: "black" }} borderTopRadius={"15px"} padding={0}>
+                  <Text textAlign="left" fontSize="16px" fontWeight="bold">
                     투표
-                  </Heading>
+                  </Text>
                 </Tab>
-                <Tab _selected={{ color: "white", bg: "black" }} padding={0}>
-                  <Heading textAlign="left" size="xs">
+                <Tab _selected={{ color: "white", bg: "black" }} borderTopRadius={"15px"} padding={0}>
+                  <Text textAlign="left" fontSize="16px" fontWeight="bold">
                     뽑기
-                  </Heading>
+                  </Text>
                 </Tab>
               </TabList>
               <TabPanels>

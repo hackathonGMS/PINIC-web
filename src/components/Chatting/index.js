@@ -55,7 +55,7 @@ export default function Chatting({ roomId, name, setIsBlock }) {
 
     socket.on(SocektEventEnum.RECEIVEMESSAGE_O, (newMessage) => {
       setMessages((message) => [...message, newMessage]);
-      console.log(newMessage.type);
+      // console.log(newMessage.type);
       if (newMessage.type === "tts") {
         TTS(newMessage.content);
       }
@@ -114,7 +114,6 @@ export default function Chatting({ roomId, name, setIsBlock }) {
       content: message,
       time: time,
     };
-    console.log(colorList[chatMode]);
     sendMsgToServer(colorList[chatMode], message, roomId, name, time);
     setMessages((message) => [...message, newMsg]);
 
@@ -149,7 +148,6 @@ export default function Chatting({ roomId, name, setIsBlock }) {
     } else if (!isUser) {
       return (
         <div ref={ref} className={`message ${isUser && "msg_user"}`}>
-          {console.log(colorList[message.type])}
           <OtherChat at={message?.time} message={message?.content} name={message?.name} type={message?.type} />
         </div>
       );
