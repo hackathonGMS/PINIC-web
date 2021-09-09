@@ -55,7 +55,7 @@ export default function Chatting({ roomId, name, setIsBlock }) {
 
     socket.on(SocektEventEnum.RECEIVEMESSAGE_O, (newMessage) => {
       setMessages((message) => [...message, newMessage]);
-      // console.log(newMessage.type);
+      console.log(newMessage);
       if (newMessage.type === "tts") {
         TTS(newMessage.content);
       }

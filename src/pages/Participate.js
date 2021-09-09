@@ -1,10 +1,12 @@
 import { Text, Box, Center, VStack, Input, Container, Flex, HStack } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { joinRoom } from "../api/connect";
 import Button from "../components/Button";
 import db from "../components/Chatting/firbase";
 export const Participate = ({ setName, match }) => {
   const [data, setData] = useState();
+
   useEffect(() => {
     console.log(match.params.id);
     db.collection("Chatting")
@@ -72,7 +74,7 @@ export const Participate = ({ setName, match }) => {
           <Center w="100%" h="111px" mt="64px">
             <VStack w="full">
               <HStack>
-                <Button Link={`/meeting/${match.params.id}`} text="회의록보러가기" variant="main_button"/>
+                <Button Link={`/meeting/${match.params.id}`} text="회의록보러가기" variant="main_button" />
                 <Button Link={`/room/${match.params.id}`} text="회의 입장!" variant="main_button" />
               </HStack>
               <Link to="/">
