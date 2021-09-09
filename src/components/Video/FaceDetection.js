@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState }from "react";
 import * as faceApi from "face-api.js";
-import { SendFaceDetectionResult } from './connect';
-import { createElement } from "react";
+import { SendFaceDetectionResult } from '../../api/connect';
 
 
 const expressionMap = {
@@ -15,7 +14,6 @@ const expressionMap = {
 };
 
 const FaceDetection = ({ video, id, room, emoticonState}) => {
-  // const video = useRef(null);
   const canvas = useRef(null);
 
   const bigger = (data, target) => {
@@ -85,7 +83,7 @@ const FaceDetection = ({ video, id, room, emoticonState}) => {
       // const dims = faceApi.matchDimensions(canvas.current, video.current, true)
       
       const context = canvas.current.getContext('2d');
-      context.font = '120px serif'
+      context.font = '500px'
       context.textAlign = "center"; 
       context.textBaseline = "middle";
       context.fillText(expressionMap[Object.keys(result.expressions)[bigger(testList, 1)]], 150, 75);

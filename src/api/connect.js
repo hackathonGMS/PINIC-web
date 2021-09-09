@@ -41,3 +41,7 @@ export const createRoom = (group, agenda, name) => {
 export const getRoomInfo = (code) => {
   socket.emit(SocektEventEnum.GET_ROOM_INFO_E, code);
 };
+
+export const SendFaceDetectionResult = (expr, id, room) => {
+  socket.emit('emoticonExpression', expr, id, room);
+}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Remon from '@remotemonster/sdk';
-import { socket } from "./connect";
-import FaceDetection from "./FaceDetection";
+import { socket } from "../../api/connect";
 
 let isConnected = false;
 let remon
@@ -39,7 +38,7 @@ const videoAttrs = {
 
 const canvasAttrs = {
   className: 'canvas',
-  style: 'position: absolute; background: white; '
+  style: 'position: absolute; background: white; display: none; '
 }
 
 const wrapperAttrs = {
@@ -182,23 +181,20 @@ export default function Video({
     remon.muteLocalAudio(!audioState);
     setAudioState(!audioState);
   }
+  const handlePicnic = () => {
+    hadleMuteMyVideo();
+    setEmoticonState(!emoticonState)
+  }
 
   useEffect(() => {
     start();
   }, []);
 
   useEffect(() => {
-    if (!socketConnected) socket.on('connect', () => {
-      setSocketConnected(true);
-      console.log(room);
-      socket.emit('testJoinRoom', room);
-    });
-  }, [socketConnected])
-
-  useEffect(() => {
     socket.on('getEmoticonExpression', (data) => {
       console.log('data', data);
       const canvas = document.getElementById('cv' + data.id);
+      canvas.style.display = 'blockinput';
       const context = canvas.getContext('2d');
       context.font = '100px';
       context.textAlign = "center"; 
@@ -219,7 +215,7 @@ export default function Video({
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <button onClick={hadleMuteMyVideo} style={{marginRight: '10px'}}>{ !videoState ? '화면 끄기' : '화면 켜기'}</button>
             <button onClick={handleMuteMyAudio} style={{marginRight: '10px'}}>{ !audioState ? '음소거' : '음소거 해제'}</button>
-            <button onClick={() => setEmoticonState(!emoticonState)}>{ emoticonState ? '내가 피크닉 가기': '얘가 피크닉 가기' }</button>
+            <button onClick={handlePicnic}>{ emoticonState ? '내가 피크닉 가기': '얘가 피크닉 가기' }</button>
           </div>
         </div>
       </div>

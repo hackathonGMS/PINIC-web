@@ -9,6 +9,7 @@ import Video from "../components/Video";
 import { Todo } from "../components/Chatting/TodoBlock";
 import PullBlock from '../components/Chatting/PullBlock';
 import FaceDetection from '../components/Video/FaceDetection';
+import RandomBlock from '../components/Chatting/RandomBlock';
 
 export const Main = (props) => {
   const [isOpen, setIsOpen] = useState(false);
