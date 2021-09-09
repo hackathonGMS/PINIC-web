@@ -51,7 +51,7 @@ export const Todo = ({ roomId }) => {
     db.collection("Chatting")
       .doc(roomId)
       .onSnapshot((d) => {
-        if (d.data().todo !== undefined) {
+        if (d.data()?.todo !== undefined) {
           setTodoList(d.data().todo);
         }
       });
@@ -63,7 +63,8 @@ export const Todo = ({ roomId }) => {
         style={{ display: "flex", flexDirection: "column", minHeight: "60px", maxHeight: "160px", overflowY: "auto", paddingRight: "5px" }}>
         {notConfirmList().map((todo, index) => (
           <div key={index} style={{ display: "flex", justifyContent: "space-between" }}>
-            {todo.value}
+            <Text size="12px">{todo.value}</Text>
+
             <div style={{ display: "flex", alignSelf: "center" }}>
               <input type="checkbox" checked={todo.done} onChange={() => changeTodoState(todo.value, false)} />
             </div>
@@ -71,7 +72,7 @@ export const Todo = ({ roomId }) => {
         ))}
         {confirmedList().map((todo, index) => (
           <div key={index} style={{ display: "flex", justifyContent: "space-between" }}>
-            {todo.value}
+            <Text size="12px">{todo.value}</Text>
             <div style={{ display: "flex", alignSelf: "center" }}>
               <input type="checkbox" checked={todo.done} onChange={() => changeTodoState(todo.value, true)} />
             </div>

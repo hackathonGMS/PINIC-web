@@ -9,12 +9,15 @@ import Video from "../components/Video";
 import { Todo } from "../components/Chatting/TodoBlock";
 import PullBlock from "../components/Chatting/PullBlock";
 import RandomBlock from "../components/Chatting/RandomBlock";
+import { joinRoom } from "../api/connect";
 
 export const Main = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [handelConnect, setHandleConnect] = useState(false);
   const [isBlock, setIsBlock] = useState(0);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    joinRoom(String(props.match.params.id), props.name);
+  }, []);
   const handleClick = (index) => {
     setIsBlock(index);
   };
