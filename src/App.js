@@ -39,9 +39,12 @@ function App() {
                 <Route exact path="/explan">
                   <Explan />
                 </Route>
-                <Route exact path="/meeting">
-                  <Meeting />
-                </Route>
+                <Route
+                  path="/meeting/:id"
+                  render={(props) => {
+                    return <Meeting {...props} />;
+                  }}
+                />
               </Switch>
             </AnimatePresence>
           )}

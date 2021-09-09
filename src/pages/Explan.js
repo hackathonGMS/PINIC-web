@@ -4,11 +4,11 @@ import ExplanChapterForm from "../components/ExplanChapterForm";
 export const Explan = () => {
   return (
     <>
-    <Container minH="100vh" centerContent>
-      <Flex align={"center"} mt={20} direction={"column"}>
-        <ExplanChapterForm />
-      </Flex>
-    </Container>
+      <Container minH="100vh" centerContent>
+        <Flex align={"center"} mt={20} direction={"column"}>
+          <ExplanChapterForm />
+        </Flex>
+      </Container>
     </>
   );
 };

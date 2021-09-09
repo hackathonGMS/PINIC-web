@@ -48,7 +48,7 @@ function ChatHistoryCategory({ setChatMode }) {
       </Button>
       <Button
         onClick={() => {
-          setChatMode(4);
+          setChatMode(3);
         }}
         h="23px"
         border="5px"
@@ -62,7 +62,7 @@ function ChatHistoryCategory({ setChatMode }) {
       </Button>
       <Button
         onClick={() => {
-          setChatMode(5);
+          setChatMode(4);
         }}
         h="23px"
         border="10px"
