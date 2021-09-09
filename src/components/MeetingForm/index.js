@@ -6,8 +6,8 @@ import TitleInfo from "./TitleInfo";
 import ChatHistoryCategory from "./ChatHistoryCategory";
 import ChatHistory from "./ChatHistory";
 import VoteResult from "./VoteResult";
-import DrawResult from "./DrawResult";
-import KakaoShareButton from "./KakaoShareButton";
+import RandomResult from "./RandomResult";
+import { shareKakao } from "../KakaoShare/KakaoShare";
 
 export const login = (data) => {
     
@@ -15,11 +15,24 @@ export const login = (data) => {
 };
 
 export const MeetingForm = ( {match} ) => {
+    const {Kakao} = window;
     const [messages, setMessages] = useState([]);
     const [roomInfo, setRoomInfo] = useState([]);
+    const [votepicks, setVotepicks] = useState([]);
     const [randompicks, setRandompicks] = useState([]);
     const [users, setUsers] = useState([]);
     const [chatMode, setChatMode] = useState(0);
+    const [isInit, setIsInit] = useState(false);
+    const onKakaoClick = () => {
+        console.log(isInit);
+        if(!isInit){
+            console.log('카카오 초기화')
+            Kakao.init('67eff8bf1c775bdcad01f6a5b47bf4cc');
+            setIsInit(true);
+        }
+        shareKakao(`${match.params.id}의 회의록`, "");
+      };
+
     useEffect(() => {
         console.log(match.params.id);
         axios.get(`http://3.38.18.25:3000/chat/chatlist/${match.params.id}`)
@@ -64,7 +77,7 @@ export const MeetingForm = ( {match} ) => {
             <Divider w="60px" border="2px" borderColor="white" backgroundColor="white"/>
             <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
             flexDirection="column" overflowY="auto" bgColor="rgba(0,0,0,0.3)" padding="25px">
-                <VoteResult/>
+                <VoteResult votepicks={votepicks}/>
             </Box>
         </VStack>
         <VStack w="100%" align="left">
@@ -72,12 +85,12 @@ export const MeetingForm = ( {match} ) => {
             <Divider w="60px" border="2px" borderColor="white" backgroundColor="white"/>
             <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
             flexDirection="column" overflowY="auto" bgColor="rgba(0,0,0,0.3)" padding="25px">
-                <DrawResult/>
+                <RandomResult randompicks={randompicks}/>
             </Box>
         </VStack>
         <HStack spacing="27px">
             <LinkButton Link="/" text="돌아가기" variant="main_button"/>
-            <LinkButton Link="/Meeting" text="로그 공유하기" variant="main_button"/>
+            <Button w="100%" variant="main_button" onClick={onKakaoClick}>로그 공유하기</Button>
         </HStack>
     </VStack>
     </>
