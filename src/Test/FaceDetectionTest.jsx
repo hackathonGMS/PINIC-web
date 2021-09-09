@@ -40,29 +40,30 @@ const videoAttrs = {
 
 const canvasAttrs = {
   className: 'canvas',
-  style: 'position: absolute'
+  style: 'position: absolute; background: white; '
 }
 
 const wrapperAttrs = {
-  className: 'videoAndCanvasWrapper',
-  style: 'position: relative',
+  style: 'position: relative;',
 }
 export default function FaceDetectionTest({id, handelConnect}) {
-  const room = 'fefasdfdscdcd';
+  const room = 'sdvcsdcs';
   const [videoState, setVideoState] = useState(false);
   const [audioState, setAudioState] = useState(false);
   const [socketConnected, setSocketConnected] = useState(false);
   const [handle, setHandle] = useState(false);
   const [myRemonId, setMyRemonId] = useState('');
+  const [emoticonState, setEmoticonState] = useState(false);
   
 
   const listener = {
     onConnect(chid) {
-      console.log(`remon.listener.onConnect ${chid} at listener`);
+      console.log(`my Id ${chid}`);
     },
     onComplete() {
       console.log(`remon.listener.onComplete: ${remon.getChannelId()} `);
       remonRoom[remon.getChannelId()] = true;
+      setMyRemonId(() => remon.getChannelId().replace(":","-"));
     },
     onDisconnectChannel() {
       remon.close();
@@ -85,8 +86,8 @@ export default function FaceDetectionTest({id, handelConnect}) {
             let canvas = document.createElement('canvas');
 
             videoAttrs.id = result.channel.id.replace(":","-");
-            canvasAttrs.id = result.channel.id.replace(":","-");
-            wrapperAttrs.id = result.channel.id.replace(":","-");
+            canvasAttrs.id = 'cv' + result.channel.id.replace(":","-");
+            wrapperAttrs.id = 'wp' + result.channel.id.replace(":","-");
 
             Object.keys(videoAttrs).forEach(key => newVideo.setAttribute(key, videoAttrs[key]));
             Object.keys(canvasAttrs).forEach(key => canvas.setAttribute(key, canvasAttrs[key]));
@@ -96,7 +97,8 @@ export default function FaceDetectionTest({id, handelConnect}) {
             console.log(newVideo.id)
             newVideo.remon = new Remon({ config });
 
-            document.getElementById('otherVideos').appendChild(wrapper).append(newVideo, canvas)
+            document.getElementById('otherVideos').appendChild(wrapper).append(newVideo, canvas);
+            // document.getElementById('otherVideos').appendChild(canvas);
 
             newVideo.remon.joinCast(newVideo.id.replace("-",":"));
           }
@@ -104,9 +106,9 @@ export default function FaceDetectionTest({id, handelConnect}) {
         case 'leave':
           if(remonRoom[result.channel.id] && result.channel.id !== remon.getChannelId()){
             let video = document.getElementById(result.channel.id.replace(":","-"));
-            let canvas = document.getElementById(result.channel.id.replace(":","-"));
-            document.getElementById('otherVideos').removeChild(video);
-            // document.getElementById('otherVideos').removeChild(canvas);
+            let canvas = document.getElementById('cv' + result.channel.id.replace(":","-"));
+            document.getElementById('wp' + result.channel.id.replace(":","-")).removeChild(video);
+            document.getElementById('wp' + result.channel.id.replace(":","-")).removeChild(canvas);
             delete remonRoom[result.channel.id]
           }
           break;
@@ -124,11 +126,11 @@ export default function FaceDetectionTest({id, handelConnect}) {
       Object.keys(remonRoom).forEach( function ( id ) {
         if( id !== remon.getChannelId() ) {
           let video = document.getElementById(id.replace(":","-"));
-          let canvas = document.getElementById(id.replace(':', '-'));
+          let canvas = document.getElementById('cv' + id.replace(':', '-'));
 
           if ( video && video.remon ) {
-            document.getElementById('otherVideos').removeChild(video);
-            document.getElementById('otherVideos').removeChild(canvas);
+            document.getElementById('wp' + id.replace(':', '-')).removeChild(video);
+            document.getElementById('wp' + id.replace(':', '-')).removeChild(canvas);
           }
         }
         delete remonRoom[id];
@@ -137,31 +139,30 @@ export default function FaceDetectionTest({id, handelConnect}) {
     } else {
       isConnected = true;
       remon = new Remon({ config, listener });
-      
-      await remon.createRoom( 'room' + room );
-      let participants = await remon.fetchRooms( 'room' + room );
 
+      await remon.createRoom( 'room' + room );
+      let participants = await remon.fetchRooms('room' + room );
       participants.forEach( async function( participant ) {
         if ( !remonRoom[participant.id] ) {
           remonRoom[participant.id] = true;
 
           let newVideo = document.createElement('video');
           let canvas = document.createElement('canvas');
+          let wrapper = document.createElement('div');
 
           videoAttrs.id = participant.id.replace(":","-");
-          canvas.setAttribute('id', participant.id.replace(":","-"));
+          canvas.setAttribute('id', 'cv' + participant.id.replace(":","-"));
+          wrapper.setAttribute('id', 'wp' + participant.id.replace(":","-"));
           canvas.style.display = 'absolute';
-          console.log(canvas)
-          // setMyRemonId(() => result.channel.id.replace(":","-"));
-          setMyRemonId(() => participant.id.replace(":","-"));
+          console.log(canvas);
 
-          Object.keys(videoAttrs).forEach(key => newVideo.setAttribute(key, videoAttrs[key]))
-          console.log('NEW VIDEO ID!!!', newVideo.id);
+          Object.keys(videoAttrs).forEach(key => newVideo.setAttribute(key, videoAttrs[key]));
+          Object.keys(canvasAttrs).forEach(key => canvas.setAttribute(key, canvasAttrs[key]));
+          Object.keys(wrapperAttrs).forEach(key => wrapper.setAttribute(key, wrapperAttrs[key]));
 
           config.view.remote = `#${newVideo.id}`
           newVideo.remon = new Remon({ config });
-          document.getElementById('otherVideos').appendChild(newVideo);
-          document.getElementById('otherVideos').appendChild(canvas);
+          document.getElementById('otherVideos').appendChild(wrapper).append(newVideo, canvas);
 
           await newVideo.remon.joinCast(newVideo.id.replace("-",":"));
         }
@@ -179,28 +180,28 @@ export default function FaceDetectionTest({id, handelConnect}) {
   }
 
   useEffect(() => {
+    start();
+  }, []);
+
+  useEffect(() => {
     if (!socketConnected) socket.on('connect', () => {
       setSocketConnected(true);
-      
+      console.log(room);
+      socket.emit('testJoinRoom', room);
     });
   }, [socketConnected])
 
   useEffect(() => {
-    if (!isConnected) start();
-
     socket.on('getEmoticonExpression', (data) => {
-      const [expr, id] = data;
-      if (id !== '') {  
-        const canvas = document.getElementById(id);
-        console.log(canvas, id);
-        // const ctx = canvas.getContext('2d');
-        // ctx.font = '120px serif'
-        // ctx.textAlign = "center"; 
-        // ctx.textBaseline = "middle";
-        // ctx.fillText(expr, 160, 120);
-      };
+      console.log('data', data);
+      const canvas = document.getElementById('cv' + data.id);
+      const context = canvas.getContext('2d');
+      context.font = '100px';
+      context.textAlign = "center"; 
+      context.textBaseline = "middle";
+      context.fillText(data.expr, 160, 120);
     })
-  }, [handelConnect]);
+  }, []);
 
   return (
      <div style={{height: '100%', padding: '20px'}}>
@@ -210,11 +211,12 @@ export default function FaceDetectionTest({id, handelConnect}) {
             <div className="row" id="otherVideos" style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}} video={{ padding: '100px'}}/>
           </div>
         </div> 
-        <TTest id={myRemonId} room={room}/>
+        <TTest id={myRemonId} room={room} emoticonState={emoticonState}/>
         <div style={{ width: '100%'}}>
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <button onClick={hadleMuteMyVideo} style={{marginRight: '10px'}}>{ !videoState ? '화면 끄기' : '화면 켜기'}</button>
             <button onClick={handleMuteMyAudio} style={{marginRight: '10px'}}>{ !audioState ? '음소거' : '음소거 해제'}</button>
+            <button onClick={() => setEmoticonState(!emoticonState)}>{ emoticonState ? '내가 피크닉 가기': '얘가 피크닉 가기' }</button>
           </div>
         </div>
       </div>

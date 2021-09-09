@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState }from "react";
 import * as faceApi from "face-api.js";
 import { SendFaceDetectionResult } from './connect';
+import { createElement } from "react";
 
 
 const expressionMap = {
@@ -13,8 +14,8 @@ const expressionMap = {
   surprised: "😲"
 };
 
-const TTest = ({id, room, emoticonState}) => {
-  const video = useRef(null);
+const FaceDetection = ({ video, id, room, emoticonState}) => {
+  // const video = useRef(null);
   const canvas = useRef(null);
 
   const bigger = (data, target) => {
@@ -81,14 +82,13 @@ const TTest = ({id, room, emoticonState}) => {
 
     if (result) {
       const testList = Object.values(result.expressions);
-
       // const dims = faceApi.matchDimensions(canvas.current, video.current, true)
       
       const context = canvas.current.getContext('2d');
       context.font = '120px serif'
       context.textAlign = "center"; 
       context.textBaseline = "middle";
-      context.fillText(expressionMap[Object.keys(result.expressions)[bigger(testList, 1)]], 160, 120);
+      context.fillText(expressionMap[Object.keys(result.expressions)[bigger(testList, 1)]], 150, 75);
 
       SendFaceDetectionResult(expressionMap[Object.keys(result.expressions)[bigger(testList, 1)]], id, room)
     }
@@ -103,8 +103,8 @@ const TTest = ({id, room, emoticonState}) => {
   return (
     <div className="App">
       <div style={{ position: 'relative'}}>
-        <div style={{ width: "100%", height: "100vh", position: "relative" }}>
-          { emoticonState ? 
+        <div style={{ }}>
+        { emoticonState ? 
               <canvas 
                 id='canvas' 
                 ref={canvas}
@@ -120,11 +120,12 @@ const TTest = ({id, room, emoticonState}) => {
           <video
             id="myVideo"
             className="remote-video" 
-            ref={video}
             autoPlay
             muted
+            ref={video}
             onPlay={onPlay}
-          />
+            style={{backgroundColor: 'black', borderRadius: '10px', width: '100%' , height: '100%'}}
+            />
         </div>
       </div>
     </div>
@@ -132,4 +133,4 @@ const TTest = ({id, room, emoticonState}) => {
 
 }
 
-export default TTest;
+export default FaceDetection;
