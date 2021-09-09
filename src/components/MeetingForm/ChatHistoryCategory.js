@@ -27,7 +27,7 @@ function ChatHistoryCategory({ setChatMode }) {
         borderRadius="30px"
         p="0"
         px="10px"
-        bg="notice">
+        bg="important">
         <Text fontSize="12px" color="white" paddingX="7px">
           중요한 채팅
         </Text>
@@ -55,24 +55,9 @@ function ChatHistoryCategory({ setChatMode }) {
         borderRadius="30px"
         p="0"
         px="10px"
-        bg="hyperlink">
+        bg="link">
         <Text fontSize="12px" color="white" paddingX="7px">
           하이퍼 링크
-        </Text>
-      </Button>
-      <Button
-        onClick={() => {
-          setChatMode(4);
-        }}
-        h="23px"
-        border="10px"
-        borderRadius="30px"
-        borderColor="white"
-        p="p"
-        px="10px"
-        bg="calander">
-        <Text fontSize="12px" color="black" paddingX="7px">
-          일정 잡기
         </Text>
       </Button>
     </Wrap>

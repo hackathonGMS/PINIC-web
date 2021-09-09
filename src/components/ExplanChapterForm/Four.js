@@ -25,6 +25,7 @@ function Four({ setStep, setTitle }) {
     <Button onClick={handleNextStep} mt="69px" maxW="300px" w="100%" textColor="#7879F1">
         <Text>다음</Text>
     </Button>
+    <Box h="50px"/>
     </>
   );
 }

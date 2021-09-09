@@ -22,6 +22,7 @@ function Nine({ setStep }) {
     <Box w="70%" mt="50px">
       <Button Link="/" text="홈으로" variant="main_button"/>
     </Box>
+    <Box h="50px"/>
     </>
   );
 }
