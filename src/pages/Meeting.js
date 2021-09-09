@@ -5,7 +5,7 @@ export const Meeting = ({match}) => {
   return (
     <>
       <Container minH="100vh" centerContent>
-        <Flex align={"center"} mt={20} direction={"column"}>
+        <Flex align={"center"} direction={"column"}>
           <MeetingForm match={match}/>
         </Flex>
       </Container>
