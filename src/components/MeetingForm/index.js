@@ -75,7 +75,7 @@ export const MeetingForm = ({ match }) => {
   }, []);
   return (
     <>
-    <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white">
+    <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white" w="80vw">
         <Text color="white" fontSize="32px" fontWeight="700">PICNIC | {match.params.id}의 회의록</Text>
         <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
         flexDirection="column" overflowY="auto" bgColor="rgba(0,0,0,0.3)" padding="25px">
@@ -108,7 +108,7 @@ export const MeetingForm = ({ match }) => {
             )}
           </div>
         </VStack>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
             <Text fontSize="24px">채팅 History</Text>
             <Divider w="60px" border="2px" borderColor="white" backgroundColor="white"/>
             <ChatHistoryCategory setChatMode = {setChatMode}/>
@@ -117,7 +117,7 @@ export const MeetingForm = ({ match }) => {
                 <ChatHistory messages = {messages} chatMode={chatMode}/>
             </Box>
         </VStack>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
             <Text fontSize="24px">투표 결과</Text>
             <Divider w="60px" border="2px" borderColor="white" backgroundColor="white"/>
             <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
@@ -125,7 +125,7 @@ export const MeetingForm = ({ match }) => {
                 <VoteResult votepicks={votepicks}/>
             </Box>
         </VStack>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
             <Text fontSize="24px">뽑기 결과</Text>
             <Divider w="60px" border="2px" borderColor="white" backgroundColor="white"/>
             <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
