@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState }from "react";
+import React, { useEffect, useRef }from "react";
 import * as faceApi from "face-api.js";
-import { SendFaceDetectionResult } from '../../api/connect';
+import { SendFaceDetectionResult, SendStopEmoticon } from '../../api/connect';
 
 const expressionMap = {
   neutral: "😶",
@@ -9,7 +9,7 @@ const expressionMap = {
   angry: "🤬",
   fearful: "😖",
   disgusted: "🤢",
-  surprised: "😲"
+  surprised: "😲",
 };
 
 const FaceDetection = ({ video, id, room, emoticonState}) => {
@@ -77,25 +77,28 @@ const FaceDetection = ({ video, id, room, emoticonState}) => {
       .detectSingleFace(video.current, options)
       .withFaceExpressions();
 
+    const context = canvas.current.getContext('2d');
+    let testList;
+
+    const tempCanvas = document.getElementById('canvas');
+    context.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+
     if (result) {
-      const testList = Object.values(result.expressions);
-      // const dims = faceApi.matchDimensions(canvas.current, video.current, true)
-      
-      const context = canvas.current.getContext('2d');
-      context.font = '500px'
+
+      testList = Object.values(result.expressions);  
+    
+      context.font = '100px Arial'
       context.textAlign = "center"; 
       context.textBaseline = "middle";
-      context.fillText(expressionMap[Object.keys(result.expressions)[bigger(testList, 1)]], 150, 75);
 
+      context.fillText(expressionMap[Object.keys(result.expressions)[bigger(testList, 1)]], 150, 75);
       SendFaceDetectionResult(expressionMap[Object.keys(result.expressions)[bigger(testList, 1)]], id, room)
-    }
+    } else {}
+
+    
 
     setTimeout(() => onPlay());
   };
-
-  useEffect(() => {
-  }, []);
-
 
   return (
     <div className="App">
@@ -105,7 +108,7 @@ const FaceDetection = ({ video, id, room, emoticonState}) => {
               <canvas 
                 id='canvas' 
                 ref={canvas}
-                style={{ backgroundColor: 'white', position: 'absolute' }}
+                style={{ backgroundColor: 'black', position: 'absolute' , width: '100%', height: '100%', borderRadius: '10px'}}
               />
             :
               <canvas 

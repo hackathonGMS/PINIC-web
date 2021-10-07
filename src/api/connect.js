@@ -6,8 +6,6 @@ export const SocektEventEnum = {
   DISCONNECT_E: "disconnect",
   SNED_MESSAGE_TO_SEVER_E: "sendMessage",
   RECEIVEMESSAGE_O: "receiveMessage",
-  RAMDOM_PICK_E: "randomPick",
-  RAMDOM_PICK_O: "randomPickResult",
   GET_ROOM_INFO_E: "roomInfo",
   GET_ROOM_INFO_O: "roomInfo",
   RAMDOM_PICK_E: "randomPick",
@@ -17,6 +15,7 @@ export const SocektEventEnum = {
   JOIN_ROOM_O: "joinRoom",
   CREATE_ROOM_E: "createRoom",
   ROOM_CODE_O: "roomCode",
+  STOP_EMOTICON: "stopEmoticon"
 };
 
 export const socket = io(URL, { transports: ["websocket"] });
@@ -44,4 +43,7 @@ export const getRoomInfo = (code) => {
 
 export const SendFaceDetectionResult = (expr, id, room) => {
   socket.emit('emoticonExpression', expr, id, room);
+}
+export const SendStopEmoticon = (id, room) => {
+  socket.emit('stopEmoticon', id, room);
 }

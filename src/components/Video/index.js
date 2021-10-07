@@ -38,7 +38,7 @@ const videoAttrs = {
 
 const canvasAttrs = {
   className: 'canvas',
-  style: 'position: absolute; background: white; display: none; '
+  style: 'background: black; display: none; border-radius: 10px;'
 }
 
 const wrapperAttrs = {
@@ -156,8 +156,7 @@ export default function Video({
           videoAttrs.id = participant.id.replace(":","-");
           canvas.setAttribute('id', 'cv' + participant.id.replace(":","-"));
           wrapper.setAttribute('id', 'wp' + participant.id.replace(":","-"));
-          canvas.style.display = 'absolute';
-          console.log(canvas);
+          // canvas.style.display = 'absolute';
 
           Object.keys(videoAttrs).forEach(key => newVideo.setAttribute(key, videoAttrs[key]));
           Object.keys(canvasAttrs).forEach(key => canvas.setAttribute(key, canvasAttrs[key]));
@@ -192,14 +191,20 @@ export default function Video({
 
   useEffect(() => {
     socket.on('getEmoticonExpression', (data) => {
-      console.log('data', data);
       const canvas = document.getElementById('cv' + data.id);
-      canvas.style.display = 'blockinput';
+      canvas.style.display = 'block';
+      canvas.style.transform = 'translate(0, -240px)';
+      canvas.style.width = '320px';
+      canvas.style.height = '240px';
+
       const context = canvas.getContext('2d');
-      context.font = '100px';
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      context.font = '100px Arial';
       context.textAlign = "center"; 
       context.textBaseline = "middle";
-      context.fillText(data.expr, 160, 120);
+
+      context.fillText(data.expr, canvas.width/2, canvas.height/2);
     })
   }, []);
 
