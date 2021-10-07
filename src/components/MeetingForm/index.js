@@ -9,7 +9,7 @@ import VoteResult from "./VoteResult";
 import RandomResult from "./RandomResult";
 import db from "../Chatting/firbase";
 import { shareKakao } from "../KakaoShare/KakaoShare";
-
+import db from "../Chatting/firbase";
 export const MeetingForm = ({ match }) => {
   const [todoList, setTodoList] = useState([]);
   const [title, setTitle] = useState("");
@@ -54,19 +54,17 @@ export const MeetingForm = ({ match }) => {
     db.collection("Chatting")
       .doc(String(match.params.id))
       .collection("Pull")
-      .onSnapshot((d) => {
-        if (d.docChanges().length < 3) {
-          d.docChanges().forEach((change) => {
-            setTitle(change.doc.data().title);
-            setList(change.doc.data().lists);
-            setIsAnoun(change.doc.data().isAnoun);
-            setIsMulti(change.doc.data().isMulti);
-          });
+      .get()
+      .then((data) => {
+        if (data) {
+          setList(data.docs);
+          console.log("응애 나는 투표", data.docs[0].data());
+        } else {
         }
       });
     console.log(String(match.params.id));
   }, []);
-  useEffect(() => {}, [todoList]);
+  useEffect(() => {}, [todoList, lists]);
   useEffect(() => {
     console.log(match.params.id);
     axios.get(`http://3.38.18.25:3000/chat/chatlist/${match.params.id}`).then((response) => setMessages(response.data));
@@ -76,11 +74,22 @@ export const MeetingForm = ({ match }) => {
   }, []);
   return (
     <>
-    <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white" w="80vw">
-        <Text color="white" fontSize="32px" fontWeight="700">PICNIC | {match.params.id}의 회의록</Text>
-        <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
-        flexDirection="column" overflowY="auto" bgColor="rgba(0,0,0,0.3)" padding="25px">
-            <TitleInfo roomInfo={roomInfo} users={users}/>
+      <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white" w="80vw">
+        <Text color="white" fontSize="32px" fontWeight="700">
+          PICNIC | {match.params.id}의 회의록
+        </Text>
+        <Box
+          bg="white"
+          maxW="650px"
+          w="100%"
+          h="300px"
+          borderRadius="12px"
+          display="flex"
+          flexDirection="column"
+          overflowY="auto"
+          bgColor="rgba(0,0,0,0.3)"
+          padding="25px">
+          <TitleInfo roomInfo={roomInfo} users={users} />
         </Box>
         <VStack w="100%" align="left">
           <Text fontSize="24px">회의 ToDo</Text>
@@ -110,35 +119,70 @@ export const MeetingForm = ({ match }) => {
           </div>
         </VStack>
         <VStack w="100%" maxW="650px" align="left">
-            <Text fontSize="24px">채팅 History</Text>
-            <Divider w="60px" border="2px" borderColor="white" backgroundColor="white"/>
-            <ChatHistoryCategory setChatMode = {setChatMode}/>
-            <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
-            flexDirection="column" overflowY="auto" bgColor="rgba(0,0,0,0.3)" padding="25px">
-                <ChatHistory messages = {messages} chatMode={chatMode}/>
-            </Box>
+          <Text fontSize="24px">채팅 History</Text>
+          <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
+          <ChatHistoryCategory setChatMode={setChatMode} />
+          <Box
+            bg="white"
+            maxW="650px"
+            w="100%"
+            h="300px"
+            borderRadius="12px"
+            display="flex"
+            flexDirection="column"
+            overflowY="auto"
+            bgColor="rgba(0,0,0,0.3)"
+            padding="25px">
+            <ChatHistory messages={messages} chatMode={chatMode} />
+          </Box>
+        </VStack>
+        <VStack w="100%" align="left">
+          <Text fontSize="24px">투표 결과</Text>
+          <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
+          <Box
+            bg="white"
+            maxW="650px"
+            w="100%"
+            h="300px"
+            borderRadius="12px"
+            display="flex"
+            flexDirection="column"
+            overflowY="auto"
+            bgColor="rgba(0,0,0,0.3)"
+            padding="25px">
+            {
+              (lists && console.log(lists),
+              lists.map((data, index) => {
+                console.log("투표데이터", data);
+                return <VoteResult id={index} votepicks={data} />;
+              }))
+            }
+          </Box>
         </VStack>
         <VStack w="100%" maxW="650px" align="left">
-            <Text fontSize="24px">투표 결과</Text>
-            <Divider w="60px" border="2px" borderColor="white" backgroundColor="white"/>
-            <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
-            flexDirection="column" overflowY="auto" bgColor="rgba(0,0,0,0.3)" padding="25px">
-                <VoteResult votepicks={votepicks}/>
-            </Box>
-        </VStack>
-        <VStack w="100%" maxW="650px" align="left">
-            <Text fontSize="24px">뽑기 결과</Text>
-            <Divider w="60px" border="2px" borderColor="white" backgroundColor="white"/>
-            <Box bg="white" maxW="650px" w="100%" h="300px" borderRadius="12px" display="flex" 
-            flexDirection="column" overflowY="auto" bgColor="rgba(0,0,0,0.3)" padding="25px">
-                <RandomResult randompicks={randompicks}/>
-            </Box>
+          <Text fontSize="24px">뽑기 결과</Text>
+          <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
+          <Box
+            bg="white"
+            maxW="650px"
+            w="100%"
+            h="300px"
+            borderRadius="12px"
+            display="flex"
+            flexDirection="column"
+            overflowY="auto"
+            bgColor="rgba(0,0,0,0.3)"
+            padding="25px">
+            <RandomResult randompicks={randompicks} />
+          </Box>
         </VStack>
         <HStack spacing="27px">
-            <LinkButton Link="/" text="돌아가기" variant="main_button"/>
-            <Button w="100%" variant="main_button" onClick={onKakaoClick}>로그 공유하기</Button>
+          <LinkButton Link="/" text="돌아가기" variant="main_button" />
+          <Button w="100%" variant="main_button" onClick={onKakaoClick}>
+            로그 공유하기
+          </Button>
         </HStack>
-    </VStack>
+      </VStack>
     </>
   );
 };
