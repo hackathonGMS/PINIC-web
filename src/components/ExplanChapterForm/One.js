@@ -1,5 +1,6 @@
 import { InputGroup, Input, Text, Box, Button, Container, Flex, Image, Center } from "@chakra-ui/react";
 import React from "react";
+import { motion } from "framer-motion";
 
 import Logo from "../Logo";
 
@@ -18,9 +19,18 @@ function One({ setStep }) {
         Step 1. 피크닉은 사용자 친화적 화상미팅 플랫폼이에요
       </Text>
     </Box>
-    <Center h="485px" alignItems="top">
-      <Image h="100%" objectFit="none" src="/ExplanImages/image1.png" alignSelf="mid"></Image>
-    </Center>
+    <motion.div
+      animate={{
+        scale: [0,1]
+      }}
+      transition={{
+        duration:0.2
+      }}
+    >
+      <Center h="485px" alignItems="top">
+        <Image h="100%" objectFit="none" src="/ExplanImages/image1.png" alignSelf="mid"></Image>
+      </Center>
+    </motion.div>
     <Button onClick={handleNextStep} mt="69px" maxW="300px" w="100%" textColor="#7879F1">
         <Text>다음</Text>
     </Button>

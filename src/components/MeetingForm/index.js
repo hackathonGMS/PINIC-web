@@ -1,20 +1,19 @@
 import { Logo, InputCode, Button as LinkButton } from "..";
 import { Box, Flex, Heading, Text, VStack, Container, Divider, HStack, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-
 import axios from "axios";
 import TitleInfo from "./TitleInfo";
 import ChatHistoryCategory from "./ChatHistoryCategory";
 import ChatHistory from "./ChatHistory";
 import VoteResult from "./VoteResult";
 import RandomResult from "./RandomResult";
-import { shareKakao } from "../KakaoShare/KakaoShare";
 import db from "../Chatting/firbase";
+import { shareKakao } from "../KakaoShare/KakaoShare";
 
 export const MeetingForm = ({ match }) => {
   const [todoList, setTodoList] = useState([]);
   const [title, setTitle] = useState("");
-  const [lists, setList] = useState();
+  const [lists, setList] = useState([]);
   const [isAnoun, setIsAnoun] = useState(false);
   const [isMulti, setIsMulti] = useState(false);
   const { Kakao } = window;
@@ -23,13 +22,17 @@ export const MeetingForm = ({ match }) => {
   const [votepicks, setVotepicks] = useState([]);
   const [randompicks, setRandompicks] = useState([]);
   const [users, setUsers] = useState([]);
-  const [chatMode, setChatMode] = useState(0);
+  const [chatMode, setChatMode] = useState(-1);
   const [isInit, setIsInit] = useState(false);
   const notConfirmList = () => {
-    return todoList.filter((todo) => todo.done !== false);
+    return todoList.filter((todo) => {
+      return todo.done !== false;
+    });
   };
   const confirmedList = () => {
-    return todoList.filter((todo) => todo.done !== true);
+    return todoList.filter((todo) => {
+      return todo.done !== true;
+    });
   };
   const onKakaoClick = () => {
     console.log(isInit);
@@ -51,18 +54,17 @@ export const MeetingForm = ({ match }) => {
     db.collection("Chatting")
       .doc(String(match.params.id))
       .collection("Pull")
-      .onSnapshot((d) => {
-        if (d.docChanges().length < 3) {
-          d.docChanges().forEach((change) => {
-            setTitle(change.doc.data().title);
-            setList(change.doc.data().lists);
-            setIsAnoun(change.doc.data().isAnoun);
-            setIsMulti(change.doc.data().isMulti);
-          });
+      .get()
+      .then((data) => {
+        if (data) {
+          setList(data.docs);
+          console.log("응애 나는 투표", data.docs[0].data());
+        } else {
         }
       });
-    console.log(lists);
+    console.log(String(match.params.id));
   }, []);
+  useEffect(() => {}, [todoList, lists]);
   useEffect(() => {
     console.log(match.params.id);
     axios.get(`http://3.38.18.25:3000/chat/chatlist/${match.params.id}`).then((response) => setMessages(response.data));
@@ -72,7 +74,7 @@ export const MeetingForm = ({ match }) => {
   }, []);
   return (
     <>
-      <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white">
+      <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white" w="80vw">
         <Text color="white" fontSize="32px" fontWeight="700">
           PICNIC | {match.params.id}의 회의록
         </Text>
@@ -89,17 +91,34 @@ export const MeetingForm = ({ match }) => {
           padding="25px">
           <TitleInfo roomInfo={roomInfo} users={users} />
         </Box>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
           <Text fontSize="24px">회의 ToDo</Text>
           <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
-          {notConfirmList().map((todo, index) => {
-            <Text fontSize="18px">{todo.value}</Text>;
-          })}
-          {confirmedList().map((todo, index) => {
-            <Text size="12px">{todo.value}</Text>;
-          })}
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {todoList &&
+              notConfirmList().map((todo, index) => (
+                <>
+                  <Text fontSize="18px">{todo.value}</Text>
+                  <div style={{ display: "flex", alignSelf: "center" }}>
+                    <input type="checkbox" checked={todo.done} />
+                  </div>
+                </>
+              ))}
+            {todoList && (
+              <>
+                {confirmedList().map((todo, index) => (
+                  <>
+                    <Text fontSize="18px">{todo.value}</Text>
+                    <div style={{ display: "flex", alignSelf: "center" }}>
+                      <input type="checkbox" checked={todo.done} />
+                    </div>
+                  </>
+                ))}
+              </>
+            )}
+          </div>
         </VStack>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
           <Text fontSize="24px">채팅 History</Text>
           <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
           <ChatHistoryCategory setChatMode={setChatMode} />
@@ -117,7 +136,7 @@ export const MeetingForm = ({ match }) => {
             <ChatHistory messages={messages} chatMode={chatMode} />
           </Box>
         </VStack>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
           <Text fontSize="24px">투표 결과</Text>
           <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
           <Box
@@ -131,10 +150,16 @@ export const MeetingForm = ({ match }) => {
             overflowY="auto"
             bgColor="rgba(0,0,0,0.3)"
             padding="25px">
-            {lists && <VoteResult votepicks={lists} title={title} />}
+            {
+              (lists.length>0 && 
+              lists.map((data, index) => {
+                console.log("투표데이터", data);
+                return <VoteResult id={index} votepicks={data} />;
+              }))
+            }
           </Box>
         </VStack>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
           <Text fontSize="24px">뽑기 결과</Text>
           <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
           <Box

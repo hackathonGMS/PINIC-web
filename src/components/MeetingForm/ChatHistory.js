@@ -8,7 +8,11 @@ export const ChatHistory = ({messages, chatMode}) => {
         if(messages==null){
             return;
         }
-        const filtered = messages.filter((e)=>e.type==chatList[chatMode]);
+        let filtered;
+        if(chatMode>=0)
+            filtered = messages.filter((e)=>e.type==chatList[chatMode]);
+        else
+            filtered = messages;
         return filtered.map((data) => (
             <HStack>
                 <Text fontSize="18px">{data.time}</Text>
