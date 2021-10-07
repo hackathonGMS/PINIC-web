@@ -1,7 +1,6 @@
 import { Logo, InputCode, Button as LinkButton } from "..";
 import { Box, Flex, Heading, Text, VStack, Container, Divider, HStack, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-
 import axios from "axios";
 import TitleInfo from "./TitleInfo";
 import ChatHistoryCategory from "./ChatHistoryCategory";
@@ -10,7 +9,6 @@ import VoteResult from "./VoteResult";
 import RandomResult from "./RandomResult";
 import { shareKakao } from "../KakaoShare/KakaoShare";
 import db from "../Chatting/firbase";
-
 export const MeetingForm = ({ match }) => {
   const [todoList, setTodoList] = useState([]);
   const [title, setTitle] = useState("");
@@ -75,7 +73,7 @@ export const MeetingForm = ({ match }) => {
   }, []);
   return (
     <>
-      <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white">
+      <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white" w="80vw">
         <Text color="white" fontSize="32px" fontWeight="700">
           PICNIC | {match.params.id}의 회의록
         </Text>
@@ -119,7 +117,7 @@ export const MeetingForm = ({ match }) => {
             )}
           </div>
         </VStack>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
           <Text fontSize="24px">채팅 History</Text>
           <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
           <ChatHistoryCategory setChatMode={setChatMode} />
@@ -160,7 +158,7 @@ export const MeetingForm = ({ match }) => {
             }
           </Box>
         </VStack>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
           <Text fontSize="24px">뽑기 결과</Text>
           <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
           <Box

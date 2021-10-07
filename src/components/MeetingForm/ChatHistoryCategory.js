@@ -3,6 +3,21 @@ import { Box, Button, Text, Wrap } from "@chakra-ui/react";
 function ChatHistoryCategory({ setChatMode }) {
   return (
     <Wrap w="full" mt="12px" spacing="15px">
+    <Button
+      onClick={() => {
+        setChatMode(-1);
+      }}
+      h="23px"
+      border="1px"
+      borderRadius="30px"
+      borderColor="white"
+      p="p"
+      px="10px"
+      bg="black">
+      <Text fontSize="12px" color="white" paddingX="7px">
+        모두 보기
+      </Text>
+    </Button>
       <Button
         onClick={() => {
           setChatMode(0);

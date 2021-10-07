@@ -6,8 +6,6 @@ export const SocektEventEnum = {
   DISCONNECT_E: "disconnect",
   SNED_MESSAGE_TO_SEVER_E: "sendMessage",
   RECEIVEMESSAGE_O: "receiveMessage",
-  RAMDOM_PICK_E: "randomPick",
-  RAMDOM_PICK_O: "randomPickResult",
   GET_ROOM_INFO_E: "roomInfo",
   GET_ROOM_INFO_O: "roomInfo",
   RAMDOM_PICK_E: "randomPick",
