@@ -9,40 +9,70 @@ import VoteResult from "./VoteResult";
 import RandomResult from "./RandomResult";
 import { shareKakao } from "../KakaoShare/KakaoShare";
 
-export const MeetingForm = ( {match} ) => {
-    const {Kakao} = window;
-    const [messages, setMessages] = useState([]);
-    const [roomInfo, setRoomInfo] = useState([]);
-    const [votepicks, setVotepicks] = useState([]);
-    const [randompicks, setRandompicks] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [chatMode, setChatMode] = useState(0);
-    const [isInit, setIsInit] = useState(false);
-    const onKakaoClick = () => {
-        console.log(isInit);
-        if(!isInit){
-            console.log('카카오 초기화')
-            Kakao.init('67eff8bf1c775bdcad01f6a5b47bf4cc');
-            setIsInit(true);
+export const MeetingForm = ({ match }) => {
+  const [todoList, setTodoList] = useState([]);
+  const [title, setTitle] = useState("");
+  const [lists, setList] = useState();
+  const [isAnoun, setIsAnoun] = useState(false);
+  const [isMulti, setIsMulti] = useState(false);
+  const { Kakao } = window;
+  const [messages, setMessages] = useState([]);
+  const [roomInfo, setRoomInfo] = useState([]);
+  const [votepicks, setVotepicks] = useState([]);
+  const [randompicks, setRandompicks] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [chatMode, setChatMode] = useState(0);
+  const [isInit, setIsInit] = useState(false);
+  const notConfirmList = () => {
+    return todoList.filter((todo) => {
+      return todo.done !== false;
+    });
+  };
+  const confirmedList = () => {
+    return todoList.filter((todo) => {
+      return todo.done !== true;
+    });
+  };
+  const onKakaoClick = () => {
+    console.log(isInit);
+    if (!isInit) {
+      console.log("카카오 초기화");
+      Kakao.init("67eff8bf1c775bdcad01f6a5b47bf4cc");
+      setIsInit(true);
+    }
+    shareKakao(`${match.params.id}의 회의록`, "");
+  };
+  useEffect(() => {
+    db.collection("Chatting")
+      .doc(String(match.params.id))
+      .onSnapshot((d) => {
+        if (d.data()?.todo !== undefined) {
+          setTodoList(d.data().todo);
         }
-        shareKakao(`${match.params.id}의 회의록`, "");
-      };
-
-    useEffect(() => {
-        console.log(match.params.id);
-        axios.get(`http://3.38.18.25:3000/chat/chatlist/${match.params.id}`)
-        .then(response => setMessages(response.data));
-        axios.get(`http://3.38.18.25:3000/chat/getRoom/${match.params.id}`)
-        .then(response => setRoomInfo(response.data));
-        axios.get(`http://3.38.18.25:3000/chat/randompick/${match.params.id}`)
-        .then(response => setRandompicks(response.data));
-        axios.get(`http://3.38.18.25:3000/chat/user/${match.params.id}`)
-        .then(response => setUsers(response.data));
-
-        console.log(messages);
-        console.log(roomInfo);
-        console.log(randompicks);
-    }, []);
+      });
+    db.collection("Chatting")
+      .doc(String(match.params.id))
+      .collection("Pull")
+      .onSnapshot((d) => {
+        if (d.docChanges().length < 3) {
+          d.docChanges().forEach((change) => {
+            setTitle(change.doc.data().title);
+            setList(change.doc.data().lists);
+            setIsAnoun(change.doc.data().isAnoun);
+            setIsMulti(change.doc.data().isMulti);
+          });
+        }
+      });
+    console.log(String(match.params.id));
+  }, []);
+  useEffect(() => {}, [todoList]);
+  useEffect(() => {
+    console.log(match.params.id);
+    axios.get(`http://3.38.18.25:3000/chat/chatlist/${match.params.id}`).then((response) => setMessages(response.data));
+    axios.get(`http://3.38.18.25:3000/chat/getRoom/${match.params.id}`).then((response) => setRoomInfo(response.data));
+    axios.get(`http://3.38.18.25:3000/chat/randompick/${match.params.id}`).then((response) => setRandompicks(response.data));
+    axios.get(`http://3.38.18.25:3000/chat/user/${match.params.id}`).then((response) => setUsers(response.data));
+  }, []);
   return (
     <>
     <VStack align={"center"} mt={"77px"} mb={"77px"} spacing={"70px"} direction={"column"} color="white">
@@ -52,11 +82,31 @@ export const MeetingForm = ( {match} ) => {
             <TitleInfo roomInfo={roomInfo} users={users}/>
         </Box>
         <VStack w="100%" align="left">
-            <Text fontSize="24px">회의 ToDo</Text>
-            <Divider w="60px" border="2px" borderColor="white" backgroundColor="white"/>
-            <Text fontSize="18px">1. 아이디어 브레인스토밍</Text>
-            <Text fontSize="18px">2. 아이디어 구체화</Text>
-            <Text fontSize="18px">3. 아이디어 결정하기</Text>
+          <Text fontSize="24px">회의 ToDo</Text>
+          <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {todoList &&
+              notConfirmList().map((todo, index) => (
+                <>
+                  <Text fontSize="18px">{todo.value}</Text>
+                  <div style={{ display: "flex", alignSelf: "center" }}>
+                    <input type="checkbox" checked={todo.done} />
+                  </div>
+                </>
+              ))}
+            {todoList && (
+              <>
+                {confirmedList().map((todo, index) => (
+                  <>
+                    <Text fontSize="18px">{todo.value}</Text>
+                    <div style={{ display: "flex", alignSelf: "center" }}>
+                      <input type="checkbox" checked={todo.done} />
+                    </div>
+                  </>
+                ))}
+              </>
+            )}
+          </div>
         </VStack>
         <VStack w="100%" align="left">
             <Text fontSize="24px">채팅 History</Text>
