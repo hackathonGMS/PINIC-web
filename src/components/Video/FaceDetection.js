@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState }from "react";
 import * as faceApi from "face-api.js";
 import { SendFaceDetectionResult } from '../../api/connect';
 
-
 const expressionMap = {
   neutral: "😶",
   happy: "😄",
