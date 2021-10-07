@@ -26,10 +26,14 @@ export const MeetingForm = ({ match }) => {
   const [chatMode, setChatMode] = useState(0);
   const [isInit, setIsInit] = useState(false);
   const notConfirmList = () => {
-    return todoList.filter((todo) => todo.done !== false);
+    return todoList.filter((todo) => {
+      return todo.done !== false;
+    });
   };
   const confirmedList = () => {
-    return todoList.filter((todo) => todo.done !== true);
+    return todoList.filter((todo) => {
+      return todo.done !== true;
+    });
   };
   const onKakaoClick = () => {
     console.log(isInit);
@@ -61,8 +65,9 @@ export const MeetingForm = ({ match }) => {
           });
         }
       });
-    console.log(lists);
+    console.log(String(match.params.id));
   }, []);
+  useEffect(() => {}, [todoList]);
   useEffect(() => {
     console.log(match.params.id);
     axios.get(`http://3.38.18.25:3000/chat/chatlist/${match.params.id}`).then((response) => setMessages(response.data));
@@ -92,12 +97,29 @@ export const MeetingForm = ({ match }) => {
         <VStack w="100%" align="left">
           <Text fontSize="24px">회의 ToDo</Text>
           <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
-          {notConfirmList().map((todo, index) => {
-            <Text fontSize="18px">{todo.value}</Text>;
-          })}
-          {confirmedList().map((todo, index) => {
-            <Text size="12px">{todo.value}</Text>;
-          })}
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {todoList &&
+              notConfirmList().map((todo, index) => (
+                <>
+                  <Text fontSize="18px">{todo.value}</Text>
+                  <div style={{ display: "flex", alignSelf: "center" }}>
+                    <input type="checkbox" checked={todo.done} />
+                  </div>
+                </>
+              ))}
+            {todoList && (
+              <>
+                {confirmedList().map((todo, index) => (
+                  <>
+                    <Text fontSize="18px">{todo.value}</Text>
+                    <div style={{ display: "flex", alignSelf: "center" }}>
+                      <input type="checkbox" checked={todo.done} />
+                    </div>
+                  </>
+                ))}
+              </>
+            )}
+          </div>
         </VStack>
         <VStack w="100%" align="left">
           <Text fontSize="24px">채팅 History</Text>
