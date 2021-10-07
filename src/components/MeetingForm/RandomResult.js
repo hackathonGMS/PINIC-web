@@ -6,10 +6,11 @@ export const RandomResult = ({randompicks}) => {
       if(randompicks == null){
         return;
       }
+      
       return randompicks.map((data, index) => (
         <>
           <Text fontSize="18px">{index+1}번째 뽑기 | {data.title}</Text>
-          <Text fontSize="14px" fontWeight="200">{data.result.result} 당첨</Text>
+          <Text fontSize="14px" fontWeight="200">{data.result[0].result} 당첨</Text>
         </>
       ));
   }
