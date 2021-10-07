@@ -94,7 +94,6 @@ function MakingPull({ setIsPullOpen, setIsBlock, roomId }) {
                   p="0px"
                   fontSize="10px"
                   border="0px"
-                  value={index.obj}
                   placeholder="눌러서수정하세요"
                 />
                 <TagCloseButton

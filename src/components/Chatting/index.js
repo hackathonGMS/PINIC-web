@@ -271,6 +271,11 @@ export default function Chatting({ roomId, name, setIsBlock }) {
         <Flex h="full" w="full">
           <Box flex="1" pl="2">
             <Input
+              onKeyDown={(e) => {
+                if(e.key === "Enter") {
+                  sendMessage();
+                }
+              }}
               onChange={(e) => {
                 setSendMessage(e.target.value);
               }}

@@ -9,11 +9,11 @@ import VoteResult from "./VoteResult";
 import RandomResult from "./RandomResult";
 import db from "../Chatting/firbase";
 import { shareKakao } from "../KakaoShare/KakaoShare";
-import db from "../Chatting/firbase";
+
 export const MeetingForm = ({ match }) => {
   const [todoList, setTodoList] = useState([]);
   const [title, setTitle] = useState("");
-  const [lists, setList] = useState();
+  const [lists, setList] = useState([]);
   const [isAnoun, setIsAnoun] = useState(false);
   const [isMulti, setIsMulti] = useState(false);
   const { Kakao } = window;
@@ -91,7 +91,7 @@ export const MeetingForm = ({ match }) => {
           padding="25px">
           <TitleInfo roomInfo={roomInfo} users={users} />
         </Box>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
           <Text fontSize="24px">회의 ToDo</Text>
           <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -136,7 +136,7 @@ export const MeetingForm = ({ match }) => {
             <ChatHistory messages={messages} chatMode={chatMode} />
           </Box>
         </VStack>
-        <VStack w="100%" align="left">
+        <VStack w="100%" maxW="650px" align="left">
           <Text fontSize="24px">투표 결과</Text>
           <Divider w="60px" border="2px" borderColor="white" backgroundColor="white" />
           <Box
@@ -151,7 +151,7 @@ export const MeetingForm = ({ match }) => {
             bgColor="rgba(0,0,0,0.3)"
             padding="25px">
             {
-              (lists && console.log(lists),
+              (lists.length>0 && 
               lists.map((data, index) => {
                 console.log("투표데이터", data);
                 return <VoteResult id={index} votepicks={data} />;
