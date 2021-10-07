@@ -20,7 +20,6 @@ export const Join = (props) => {
             설명 보러가기
           </Text>
         </Link>
-        
       </Flex>
     </Container>
   );

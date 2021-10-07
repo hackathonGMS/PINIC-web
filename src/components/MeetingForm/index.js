@@ -7,6 +7,7 @@ import ChatHistoryCategory from "./ChatHistoryCategory";
 import ChatHistory from "./ChatHistory";
 import VoteResult from "./VoteResult";
 import RandomResult from "./RandomResult";
+import db from "../Chatting/firbase";
 import { shareKakao } from "../KakaoShare/KakaoShare";
 
 export const MeetingForm = ({ match }) => {
@@ -21,7 +22,7 @@ export const MeetingForm = ({ match }) => {
   const [votepicks, setVotepicks] = useState([]);
   const [randompicks, setRandompicks] = useState([]);
   const [users, setUsers] = useState([]);
-  const [chatMode, setChatMode] = useState(0);
+  const [chatMode, setChatMode] = useState(-1);
   const [isInit, setIsInit] = useState(false);
   const notConfirmList = () => {
     return todoList.filter((todo) => {

@@ -1,11 +1,12 @@
 import { Text, Box, Center, VStack, Input, Container, Flex, HStack } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { joinRoom } from "../api/connect";
 import Button from "../components/Button";
 import db from "../components/Chatting/firbase";
 export const Participate = ({ setName, match }) => {
   const [data, setData] = useState();
+  let history = useHistory();
 
   useEffect(() => {
     console.log(match.params.id);
@@ -53,6 +54,11 @@ export const Participate = ({ setName, match }) => {
           <Center w="100%" h="97px" mt="28px">
             <VStack>
               <Input
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    history.push(`/room/${match.params.id}`);
+                  }
+                }}
                 focusBorderColor="white"
                 onChange={(e) => {
                   setName(e.target.value);
