@@ -55,19 +55,17 @@ export const MeetingForm = ({ match }) => {
     db.collection("Chatting")
       .doc(String(match.params.id))
       .collection("Pull")
-      .onSnapshot((d) => {
-        if (d.docChanges().length < 3) {
-          d.docChanges().forEach((change) => {
-            setTitle(change.doc.data().title);
-            setList(change.doc.data().lists);
-            setIsAnoun(change.doc.data().isAnoun);
-            setIsMulti(change.doc.data().isMulti);
-          });
+      .get()
+      .then((data) => {
+        if (data) {
+          setList(data.docs);
+          console.log("응애 나는 투표", data.docs[0].data());
+        } else {
         }
       });
     console.log(String(match.params.id));
   }, []);
-  useEffect(() => {}, [todoList]);
+  useEffect(() => {}, [todoList, lists]);
   useEffect(() => {
     console.log(match.params.id);
     axios.get(`http://3.38.18.25:3000/chat/chatlist/${match.params.id}`).then((response) => setMessages(response.data));
@@ -153,7 +151,13 @@ export const MeetingForm = ({ match }) => {
             overflowY="auto"
             bgColor="rgba(0,0,0,0.3)"
             padding="25px">
-            {lists && <VoteResult votepicks={lists} title={title} />}
+            {
+              (lists && console.log(lists),
+              lists.map((data, index) => {
+                console.log("투표데이터", data);
+                return <VoteResult id={index} votepicks={data} />;
+              }))
+            }
           </Box>
         </VStack>
         <VStack w="100%" align="left">
