@@ -80,8 +80,8 @@ const FaceDetection = ({ video, id, room, emoticonState}) => {
     const context = canvas.current.getContext('2d');
     let testList;
 
-    const tempCanvas = document.getElementById('canvas');
-    context.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+    // const tempCanvas = document.getElementById('canvas');
+    // context.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
 
     if (result) {
 
